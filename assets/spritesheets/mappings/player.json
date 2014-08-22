@@ -1,0 +1,207 @@
+{
+  "name": "player",
+  "width": 30,
+  "height": 35,
+  "sprites": {
+    "forward": {
+      "right_foot_forward": {
+        "top_left": {
+          "x": 5,
+          "y": 5
+        }
+      },
+      "still": {
+        "top_left": {
+          "x": 45,
+          "y": 5
+        }
+      },
+      "left_foot_forward": {
+        "top_left": {
+          "x": 85,
+          "y": 5
+        }
+      },
+      "hand_raising": {
+        "top_left": {
+          "x": 4,
+          "y": 404
+        }
+      },
+      "gun_in_hand": {
+        "top_left": {
+          "x": 43,
+          "y": 404
+        }
+      },
+      "firing_start": {
+        "top_left": {
+          "x": 82,
+          "y": 404
+        }
+      },
+      "firing_middle": {
+        "top_left": {
+          "x": 4,
+          "y": 444
+        }
+      },
+      "firing_end": {
+        "top_left": {
+          "x": 43,
+          "y": 444
+        }
+      }
+    },
+    "right": {
+      "right_foot_forward": {
+        "top_left": {
+          "x": 85,
+          "y": 45
+        }
+      },
+      "still": {
+        "top_left": {
+          "x": 45,
+          "y": 45
+        }
+      },
+      "left_foot_forward": {
+        "top_left": {
+          "x": 5,
+          "y": 45
+        }
+      },
+      "hand_raising": {
+        "top_left": {
+          "x": 42,
+          "y": 165
+        }
+      },
+      "gun_in_hand": {
+        "top_left": {
+          "x": 82,
+          "y": 165
+        }
+      },
+      "firing_start": {
+        "top_left": {
+          "x": 2,
+          "y": 205
+        }
+      },
+      "firing_middle": {
+        "top_left": {
+          "x": 42,
+          "y": 205
+        }
+      },
+      "firing_end": {
+        "top_left": {
+          "x": 82,
+          "y": 205
+        }
+      }
+    },
+    "back": {
+      "right_foot_forward": {
+        "top_left": {
+          "x": 84,
+          "y": 85
+        }
+      },
+      "still": {
+        "top_left": {
+          "x": 45,
+          "y": 85
+        }
+      },
+      "left_foot_forward": {
+        "top_left": {
+          "x": 4,
+          "y": 86
+        }
+      },
+      "hand_raising": {
+        "top_left": {
+          "x": 4,
+          "y": 325
+        }
+      },
+      "gun_in_hand": {
+        "top_left": {
+          "x": 44,
+          "y": 325
+        }
+      },
+      "firing_start": {
+        "top_left": {
+          "x": 84,
+          "y": 325
+        }
+      },
+      "firing_middle": {
+        "top_left": {
+          "x": 4,
+          "y": 365
+        }
+      },
+      "firing_end": {
+        "top_left": {
+          "x": 44,
+          "y": 365
+        }
+      }
+    },
+    "left": {
+      "right_foot_forward": {
+        "top_left": {
+          "x": 82,
+          "y": 125
+        }
+      },
+      "still": {
+        "top_left": {
+          "x": 42,
+          "y": 125
+        }
+      },
+      "left_foot_forward": {
+        "top_left": {
+          "x": 2,
+          "y": 125
+        }
+      },
+      "hand_raising": {
+        "top_left": {
+          "x": 44,
+          "y": 245
+        }
+      },
+      "gun_in_hand": {
+        "top_left": {
+          "x": 4,
+          "y": 245
+        }
+      },
+      "firing_start": {
+        "top_left": {
+          "x": 84,
+          "y": 285
+        }
+      },
+      "firing_middle": {
+        "top_left": {
+          "x": 44,
+          "y": 285
+        }
+      },
+      "firing_end": {
+        "top_left": {
+          "x": 4,
+          "y": 285
+        }
+      }
+    }
+  }
+}

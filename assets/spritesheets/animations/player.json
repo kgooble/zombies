@@ -1,0 +1,33 @@
+{
+    "animations_list": ["walk", "idle"],
+    "animations": {
+        "walk": {
+            "total_time": 1.8,
+            "poses": [
+                ["right_foot_forward", 0.3],
+                ["still", 0.6],
+                ["left_foot_forward", 0.3],
+                ["still", 0.6]
+            ]
+        },
+        "idle": {
+            "total_time": 1.0,
+            "poses": [
+                ["still", 1.0]
+            ]
+        },
+        "shoot": {
+            "total_time": 1.6,
+            "poses": [
+                ["still", 0.2],
+                ["hand_raising", 0.2],
+                ["gun_in_hand", 0.2],
+                ["firing_start", 0.2],
+                ["firing_middle", 0.2],
+                ["firing_end", 0.2],
+                ["hand_raising", 0.2],
+                ["still", 0.2]
+            ]
+        }
+    }
+}

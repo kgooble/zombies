@@ -1,0 +1,20 @@
+{
+    "animations_list": ["walk", "idle"],
+    "animations": {
+        "walk": {
+            "total_time": 4.4,
+            "poses": [
+                ["right_foot_forward", 0.7],
+                ["still", 1.5],
+                ["left_foot_forward", 0.7],
+                ["still", 1.5]
+            ]
+        },
+        "idle": {
+            "total_time": 1.0,
+            "poses": [
+                ["still", 1.0]
+            ]
+        }
+    }
+}
