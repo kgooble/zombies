@@ -5,12 +5,10 @@ require.config({
 });
 
 requirejs([
-        'jquery', 'input', 'game', 'world'/*,
-        'imageloader', 'jsonloader',
-        'spritemap', 'animations'*/
+        'jquery', 'input', 'game', 'world'
 
         ],
-function ($, input, game, world, imageloader, jsonloader, spritemap, animations) {
+function ($, input, game, world) {
     var ONE_FRAME_TIME = 1000/60;
     var TIME_DELTA = 1 / ONE_FRAME_TIME;
 
