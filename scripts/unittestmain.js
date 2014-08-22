@@ -16,12 +16,14 @@ require.config({
 
 // require the unit tests.
 require(
-    ['QUnit', 'tests/vector2tests', 'tests/clocktests', 'tests/animationstest'],
-    function(QUnit, vector2tests, clocktests, animationstest) {
+    ['QUnit', 'tests/vector2tests', 'tests/clocktests', 'tests/animationstest',
+     'tests/animationstatetest'],
+    function(QUnit, vector2tests, clocktests, animationstest, animationstatetest) {
         // run the tests.
         vector2tests.run();
         clocktests.run();
         animationstest.run();
+        animationstatetest.run();
 
         // start QUnit.
         QUnit.load();
