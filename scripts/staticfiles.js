@@ -1,7 +1,8 @@
-define({
-    createPath: function(name, type, ext){
-        // TODO get base URL from somewhere else.
-        return ("../../static/games/zombies/assets/spritesheets/" + type + 
-                "/" + name + "." + ext);
-    }
+define(['jquery'], function ($){
+    return {
+        createPath: function(name, type, ext){
+            var baseurl = $("#assetsbaseurl").val();
+            return (baseurl + "/spritesheets/" + type + "/" + name + "." + ext);
+        }
+    };
 });
