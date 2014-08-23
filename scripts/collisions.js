@@ -1,4 +1,5 @@
-define(['vector2', 'physical_shapes'], function (vector2, shapes) {
+define(['vector2', 'physical_shapes', 'logger'], 
+function (vector2, shapes, logger) {
     var rectangleRectangleCollision = function(r1, r2){
         var myTopEdgeBelowOthersBottomEdge = (
                 (r1.position.y - r1.shape.getHeight()/2) > (r2.position.y + r2.shape.getHeight()/2)
@@ -24,14 +25,22 @@ define(['vector2', 'physical_shapes'], function (vector2, shapes) {
     };
     var rectangleCircleCollision = function (rect, circ) {
         // First do the faster check to eliminate most cases
-        if (!rectangleRectangleCollision(rect, 
-                {shape:new shapes.Rectangle(circ.shape.radius*2, circ.shape.radius*2), 
-                    position:circ.position})){
+        var fakeRect = {
+             shape: new shapes.Rectangle(circ.shape.radius * 2, circ.shape.radius * 2), 
+             position: circ.position 
+        };
+
+        if (!rectangleRectangleCollision(rect, fakeRect)){
             return false;
         }
-        if (circleCircleCollision({
-            shape: new shapes.Circle(Math.min(rect.shape.getWidth(), rect.shape.getHeight())), 
-            position: rect.position}, circ)) {
+
+        // Do another faster, more restrictive check that eliminates further
+        // cases
+        var fakeCirc = {
+            shape: new shapes.Circle(Math.min(rect.shape.getWidth() / 2, rect.shape.getHeight() / 2)), 
+            position: rect.position
+        };
+        if (circleCircleCollision(fakeCirc, circ)) {
             return true;
         }
 
@@ -49,10 +58,12 @@ define(['vector2', 'physical_shapes'], function (vector2, shapes) {
         var rectRight = rectCenter.x + rect.shape.getWidth() / 2;
 
         var m = (circCenter.y - rectCenter.y) / (circCenter.x - rectCenter.x);
+        if (isNaN(m)) {
+            logger.warn ("m is not a number! rectangle:", rect, "circle:", circ);
+        }
         var b = rectCenter.y - m * rectCenter.x;
         // Line 1 is thus y = mx + b
         // Check for intersection with each edge
-
 
         // Left edge
         var x = rectLeft;
