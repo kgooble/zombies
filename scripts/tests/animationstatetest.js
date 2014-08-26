@@ -28,6 +28,6 @@ function(animationstate) {
 
         });
     };
-    return {run: run}
+    return {run: run};
 }
 );

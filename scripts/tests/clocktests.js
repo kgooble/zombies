@@ -26,6 +26,6 @@ function(clock) {
                   "after 4 ticks with max of 3, clock's time should be 0");
         });
     };
-    return {run: run}
+    return {run: run};
 }
 );

@@ -23,6 +23,6 @@ function(vector2) {
                   "magnitude of normalized vector should be 1");
         });
     };
-    return {run: run}
+    return {run: run};
 }
 );

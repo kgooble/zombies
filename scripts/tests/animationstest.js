@@ -39,6 +39,6 @@ function(animations) {
             equal(walkSetCount, 1);
         });
     };
-    return {run: run}
+    return {run: run};
 }
 );
