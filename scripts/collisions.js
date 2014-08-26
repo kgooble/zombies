@@ -64,13 +64,14 @@ function (vector2, shapes, logger) {
         var b = rectCenter.y - m * rectCenter.x;
         // Line 1 is thus y = mx + b
         // Check for intersection with each edge
+        var distance = 0;
 
         // Left edge
         var x = rectLeft;
         var y = m * x + b;
         if (y <= rectBottom && y >= rectTop){
             var leftEdgeX = new vector2.Vector2(x, y);
-            var distance = leftEdgeX.subtract(circCenter).magnitude();
+            distance = leftEdgeX.subtract(circCenter).magnitude();
             if (distance < circ.shape.radius) {
                 return leftEdgeX;
             }

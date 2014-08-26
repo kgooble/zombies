@@ -17,20 +17,20 @@ function(shapes, collisions, vector2, directions){
     var Velocity = function(speed, direction) {
        this.speed = speed;
        this.direction = direction.normalized();
-    } 
+    };
     Velocity.prototype.x = function() {
         return this.speed * this.direction.x;
-    }
+    };
     Velocity.prototype.y = function() {
         return this.speed * this.direction.y;
-    }
+    };
 
     var PhysicsObject = function(shape, position){
         this.shape = shape;
         this.position = position;
         this.forward = directions.DOWN;
         this.collides = true;
-    }
+    };
     PhysicsObject.prototype.update = function(timeDelta){
         if (this.constantVelocity){
             this.position.x += this.constantVelocity.x() * timeDelta;
@@ -109,7 +109,7 @@ function(shapes, collisions, vector2, directions){
         }
         var posn = this.objects[objectId].position;
         return new vector2.Vector2(posn.x - this.objects[objectId].getWidth()/2,
-                           posn.y - this.objects[objectId].getHeight()/2)
+                           posn.y - this.objects[objectId].getHeight()/2);
     };
     PhysicsEngine.prototype.getShape = function(objectId) {
         if (this.isInvalidIndex(objectId)){

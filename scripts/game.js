@@ -16,7 +16,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
 
         if (bounded === undefined) {
             bounded = true;
-        };
+        }
         this.bounded = bounded;
     };
     GameObject.prototype.setState = function (state) {
@@ -66,7 +66,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
             };
         this.physics.removeCollisions(this.getPhysicsId(this.targetId));
         this.physics.addManualSpeed(this.getPhysicsId(this.playerId), 20, 20);
-    },
+    };
     Game.prototype.loaded = function () {
         return this.graphics.loaded();
     };
@@ -157,8 +157,8 @@ function (physicslib, graphicslib, behaviours, directions, states) {
             }
             var posn = this.getPosition(i);
             if (this.objects[i].isDead() || 
-                    (this.objects[i].isBounded() 
-                     && this.outOfBounds(posn.x, posn.y))){
+                    (this.objects[i].isBounded() && 
+                        this.outOfBounds(posn.x, posn.y))){
                 this.physics.destroy(this.getPhysicsId(i));
                 this.graphics.destroy(this.getGraphicsId(i));
                 delete this.objects[i];

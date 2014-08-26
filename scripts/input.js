@@ -1,7 +1,7 @@
 define(['jquery', 'keyevent', 'logger'], function ($, keyevent, logger){
-    var mousemovefn = undefined;
-    var mouseclickfn = undefined;
-    var keydownfn = undefined;
+    var mousemovefn;
+    var mouseclickfn;
+    var keydownfn;
 
     var lastPressedMovementKey = null;
 
@@ -71,5 +71,5 @@ define(['jquery', 'keyevent', 'logger'], function ($, keyevent, logger){
             detachKeyBindings(game);
             detachMouseBindings(game); 
         }
-    }
+    };
 });

@@ -66,7 +66,7 @@ function(collisions, vector2) {
 
         }); 
     };
-    return {run: run}
+    return {run: run};
 }
 );
 

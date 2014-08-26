@@ -93,7 +93,7 @@ function(jsonloader, imageloader, animations, spritemap, directions, states){
 
     GraphicsEngine.prototype.isInvalidIndex = function (objectId) {
         return this.objects[objectId] === undefined;
-    }
+    };
     GraphicsEngine.prototype.clearScreen = function(ctx) {
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, ctx.width, ctx.height);

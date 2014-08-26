@@ -9,7 +9,7 @@ define(['jquery', 'staticfiles'], function($, staticfiles){
         for (var i = 0; i < jsonNameList.length; i++){
             this.loadAnimationsMap(jsonNameList[i]);
             this.loadSpriteMap(jsonNameList[i]);
-        };
+        }
     };
 
     JSONLoader.prototype.loadAnimationsMap = function (name) {
