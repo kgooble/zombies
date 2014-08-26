@@ -6,7 +6,7 @@ define(['logger', 'animationstate'], function(logger, animationstate) {
         for (var i = 0; i < animations.animations_list.length; i++){
             var name = animations.animations_list[i];
             this.animators[name] = new animationstate.AnimationState(
-                    animations.animations.name);
+                    animations.animations[name]);
         }
     };
     AnimationController.prototype.update = function (timeDelta) {
