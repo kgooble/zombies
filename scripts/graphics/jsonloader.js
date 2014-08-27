@@ -1,4 +1,4 @@
-define(['jquery', 'staticfiles'], function($, staticfiles){
+define(['jquery', './staticfiles'], function($, staticfiles){
     var MAPPINGS = "mappings";
     var ANIMATIONS = "animations";
     var JSONLoader = function() {

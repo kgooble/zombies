@@ -1,5 +1,5 @@
-define(['jsonloader', 'imageloader', 'animations', 'spritemap', 
-        'directions', 'states'], 
+define(['./jsonloader', './imageloader', './animations', './spritemap', 
+        '../directions', '../states'], 
 function(jsonloader, imageloader, animations, spritemap, directions, states){
     var SpriteRenderer = function(animator, sprite) {
         this.animator = animator;

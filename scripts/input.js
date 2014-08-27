@@ -1,4 +1,4 @@
-define(['jquery', 'keyevent', 'logger'], function ($, keyevent, logger){
+define(['jquery', 'keyevent', 'util/logger'], function ($, keyevent, logger){
     var mousemovefn;
     var mouseclickfn;
     var keydownfn;

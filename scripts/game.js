@@ -1,4 +1,4 @@
-define(['physics', 'graphics', 'behaviours', 'directions', 'states'], 
+define(['physics/engine', 'graphics/engine', 'ai/behaviours', 'directions', 'states'], 
 function (physicslib, graphicslib, behaviours, directions, states) {
     var TIME_BETWEEN_ZOMBIES = 10;
     var BULLET_SPEED = 100;

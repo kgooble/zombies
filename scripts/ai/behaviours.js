@@ -1,4 +1,4 @@
-define(['actors'], function (actors) {
+define(['./actors'], function (actors) {
     var Stats = function() {
         this.dead = false;
     };

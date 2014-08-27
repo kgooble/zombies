@@ -1,5 +1,5 @@
 "use strict";
-define(['../vector2'],
+define(['../physics/vector2'],
 function(vector2) {
     var run = function() {
         test('vector2 subtraction test', 

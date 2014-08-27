@@ -1,4 +1,4 @@
-define(['clock', 'logger'], function (clock, logger) {
+define(['util/clock', 'util/logger'], function (clock, logger) {
     var AnimationState = function(animation) {
         this.animation = animation;
         this.clock = new clock.LimitedClock(this.animation.total_time);

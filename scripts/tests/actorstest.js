@@ -1,5 +1,5 @@
 "use strict";
-define(['../actors'],
+define(['../ai/actors'],
 function(actors) {
     var run = function() {
         var zombie = new actors.ZombieActor();

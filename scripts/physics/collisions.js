@@ -1,4 +1,4 @@
-define(['vector2', 'physical_shapes', 'logger'], 
+define(['./vector2', './shapes', 'util/logger'], 
 function (vector2, shapes, logger) {
     var rectangleRectangleCollision = function(r1, r2){
         var myTopEdgeBelowOthersBottomEdge = (

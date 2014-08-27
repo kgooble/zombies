@@ -1,4 +1,4 @@
-define(['vector2', 'physical_shapes'], function(vector2, shapes) {
+define(['./physics/vector2', './physics/shapes'], function(vector2, shapes) {
     var SpawnZone = function(position, shape) {
         this.position = position;
         this.shape = shape;

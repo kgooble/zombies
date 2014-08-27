@@ -1,4 +1,4 @@
-define(['staticfiles'], function(staticfiles){
+define(['./staticfiles'], function(staticfiles){
     var ImageLoader = function(){
         this.imageMap = {};
     };

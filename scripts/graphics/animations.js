@@ -1,4 +1,4 @@
-define(['logger', 'animationstate'], function(logger, animationstate) {
+define(['util/logger', './animationstate'], function(logger, animationstate) {
     var AnimationController = function (startState, animations) {
         this.state = startState;
         this.animations = animations;

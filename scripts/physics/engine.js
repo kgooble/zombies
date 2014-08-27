@@ -1,4 +1,4 @@
-define(['physical_shapes', 'collisions', 'vector2', 'directions'], 
+define(['./shapes', './collisions', './vector2', 'directions'], 
 function(shapes, collisions, vector2, directions){
     var translateDirectionToVector = function (direction) {
         switch (direction) {

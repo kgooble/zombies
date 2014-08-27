@@ -1,5 +1,5 @@
 "use strict";
-define(['../collisions', '../vector2'],
+define(['../physics/collisions', '../physics/vector2'],
 function(collisions, vector2) {
     var run = function() {
         test("rectangle rectangle collision", 
