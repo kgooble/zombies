@@ -1,5 +1,5 @@
 "use strict";
-define(['../animationstate'],
+define(['../graphics/animationstate'],
 function(animationstate) {
     var run = function() {
         test("poses cycle correctly based on time updates to animaton state", 

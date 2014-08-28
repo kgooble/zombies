@@ -1,5 +1,5 @@
 "use strict";
-define(['../clock'],
+define(['../util/clock'],
 function(clock) {
     var run = function() {
         test('clock in range test', 

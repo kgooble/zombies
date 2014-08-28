@@ -1,5 +1,5 @@
 "use strict";
-define(['../animations'],
+define(['../graphics/animations'],
 function(animations) {
     var run = function() {
         test("do not reset state if the controller is already in that state", 
