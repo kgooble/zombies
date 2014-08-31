@@ -89,31 +89,31 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
+            "x": 243,
             "y": 404
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
+            "x": 283,
             "y": 404
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
+            "x": 321,
             "y": 404
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
+            "x": 243,
             "y": 444
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
+            "x": 282,
             "y": 444
           }
         }
@@ -129,32 +129,32 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
-            "y": 404
+            "x": 164,
+            "y": 245
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 124,
+            "y": 245
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 204,
+            "y": 285
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
-            "y": 444
+            "x": 164,
+            "y": 285
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 124,
+            "y": 285
           }
         }
       },
@@ -167,32 +167,32 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
-            "y": 404
+            "x": 44,
+            "y": 246
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 4,
+            "y": 245
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 84,
+            "y": 285
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
-            "y": 444
+            "x": 44,
+            "y": 285
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 4,
+            "y": 285
           }
         }
       },
@@ -205,32 +205,32 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
-            "y": 404
+            "x": 282,
+            "y": 245
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 242,
+            "y": 245
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 322,
+            "y": 285
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
-            "y": 444
+            "x": 282,
+            "y": 285
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 242,
+            "y": 285
           }
         }
       }
@@ -245,32 +245,32 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
-            "y": 404
+            "x": 124,
+            "y": 325
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 164,
+            "y": 325
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 204,
+            "y": 325
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
-            "y": 444
+            "x": 164,
+            "y": 365
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 164,
+            "y": 365
           }
         }
       },
@@ -284,31 +284,31 @@
         "hand_raising": {
           "top_left": {
             "x": 4,
-            "y": 404
+            "y": 325
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 44,
+            "y": 325
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 84,
+            "y": 325
           }
         },
         "firing_middle": {
           "top_left": {
             "x": 4,
-            "y": 444
+            "y": 365
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 44,
+            "y": 365
           }
         }
       },
@@ -321,32 +321,32 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
-            "y": 404
+            "x": 243,
+            "y": 325
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 283,
+            "y": 325
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 323,
+            "y": 325
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
-            "y": 444
+            "x": 243,
+            "y": 365
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 283,
+            "y": 365
           }
         }
       }
@@ -361,32 +361,32 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
-            "y": 404
+            "x": 163,
+            "y": 165
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 203,
+            "y": 165
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 123,
+            "y": 205
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
-            "y": 444
+            "x": 163,
+            "y": 205
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 203,
+            "y": 205
           }
         }
       },
@@ -399,32 +399,32 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
-            "y": 404
+            "x": 42,
+            "y": 165
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 82,
+            "y": 165
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 2,
+            "y": 205
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
-            "y": 444
+            "x": 42,
+            "y": 205
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 82,
+            "y": 205
           }
         }
       },
@@ -437,32 +437,32 @@
         },
         "hand_raising": {
           "top_left": {
-            "x": 4,
-            "y": 404
+            "x": 283,
+            "y": 165
           }
         },
         "gun_in_hand": {
           "top_left": {
-            "x": 43,
-            "y": 404
+            "x": 323,
+            "y": 165
           }
         },
         "firing_start": {
           "top_left": {
-            "x": 82,
-            "y": 404
+            "x": 243,
+            "y": 205
           }
         },
         "firing_middle": {
           "top_left": {
-            "x": 4,
-            "y": 444
+            "x": 283,
+            "y": 205
           }
         },
         "firing_end": {
           "top_left": {
-            "x": 43,
-            "y": 444
+            "x": 323,
+            "y": 205
           }
         }
       }
