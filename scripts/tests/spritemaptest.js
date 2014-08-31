@@ -1,0 +1,68 @@
+"use strict";
+define(['../graphics/spritemap'],
+function(spritemap) {
+    var run = function() {
+        test("sprite is extracted correctly from json", 
+        function () {
+        	var jsonLoader = {
+        		getSpriteMap: function () {
+        			return {
+        			    "width": 5,
+        			    "height": 10,
+        			    "sprites": {
+        			    	"left": {
+        			    		"still": {
+        			    			"basic": {
+        			    				"top_left": {
+        			    					"x": 9,
+        			    					"y": 11
+        			    				}
+        			    			}
+        			    		}
+        			    	}
+        			    }
+        			};
+        		}
+        	};
+        	var imageLoader = {
+        		getImage: function () {
+        			return null;
+        		}
+        	};
+
+        	var map = new spritemap.SpriteMap("test");
+
+        	var poseDrawer = map.getPose("left", "still", "basic", 
+        		jsonLoader, imageLoader);
+
+        	var fakeContext = {
+        		"drawImage": function (image, imageX, imageY,
+        			imageWidth, imageHeight, drawX, drawY,
+        			drawWidth, drawHeight) {
+        			this.props = {
+        				"image": image,
+        				"imageX": imageX,
+        				"imageY": imageY,
+        				"imageWidth": imageWidth,
+        				"imageHeight": imageHeight,
+        				"drawX": drawX,
+        				"drawY": drawY,
+        				"drawWidth": drawWidth,
+        				"drawHeight": drawHeight
+        			};
+        		}
+        	};
+        	poseDrawer.draw(fakeContext, 0, 0);
+        	var result = fakeContext.props;
+
+        	equal(result.imageX, 9);
+        	equal(result.imageY, 11);
+        	equal(result.imageWidth, 5);
+        	equal(result.imageHeight, 10);
+        	equal(result.drawWidth, 5);
+        	equal(result.drawHeight, 10);
+        });
+    };
+    return {run: run};
+}
+);

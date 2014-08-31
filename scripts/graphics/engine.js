@@ -30,7 +30,7 @@ function(jsonloader, imageloader, animations, spritemap, directions, states){
             default:
                 poseOrientation = "forward";
         }
-        var pose = this.sprite.getPose(poseName, poseOrientation, jsonloader, imageloader);
+        var pose = this.sprite.getPose(poseOrientation, poseName, "basic", jsonloader, imageloader);
         pose.draw(ctx, topLeftCorner);
     };
     var CircleRenderer = function(strokeColour, fillColour){
