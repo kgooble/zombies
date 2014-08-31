@@ -55,12 +55,12 @@ function(spritemap) {
         	poseDrawer.draw(fakeContext, 0, 0);
         	var result = fakeContext.props;
 
-        	equal(result.imageX, 9);
-        	equal(result.imageY, 11);
-        	equal(result.imageWidth, 5);
-        	equal(result.imageHeight, 10);
-        	equal(result.drawWidth, 5);
-        	equal(result.drawHeight, 10);
+        	equal(result.imageX, 9, "image x coordinate sent ok");
+        	equal(result.imageY, 11, "image y coordinate sent ok");
+        	equal(result.imageWidth, 5, "image width sent ok");
+        	equal(result.imageHeight, 10, "image height sent ok");
+        	equal(result.drawWidth, 5, "draw width sent ok");
+        	equal(result.drawHeight, 10, "draw height sent ok");
         });
     };
     return {run: run};

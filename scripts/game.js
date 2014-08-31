@@ -1,5 +1,13 @@
 define(['physics/engine', 'graphics/engine', 'ai/behaviours', 'directions', 'states'], 
 function (physicslib, graphicslib, behaviours, directions, states) {
+    var GameActions = {
+        MOVE_UP: 0,
+        MOVE_DOWN: 1,
+        MOVE_LEFT: 2,
+        MOVE_RIGHT: 3,
+        SHOOT_BULLET: 4,
+        STOP_MOVING: 5
+    };
     var TIME_BETWEEN_ZOMBIES = 10;
     var BULLET_SPEED = 100;
     var PLAYER_COLOR = "red";
@@ -41,6 +49,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
     var Game = function(){
         this.graphics = graphicslib;
         this.physics = physicslib;
+        this.queue = [];
     };
     Game.prototype.initialize = function (world){
         this.graphics.preload();
@@ -81,6 +90,11 @@ function (physicslib, graphicslib, behaviours, directions, states) {
     };
     Game.prototype.getTopLeftCorner = function (objectId) {
         return this.physics.getTopLeftCorner(this.getPhysicsId(objectId));
+    };
+    Game.prototype.queueAction = function (action, extraParams){
+        console.log("queueing action!", action, extraParams);
+        this.queue.push({"type": action, "params": extraParams});
+        console.log("quee is now", this.queue);
     };
     Game.prototype.moveUp = function () {
         this.moveInDirection(directions.UP);
@@ -144,6 +158,30 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         }
     };
     Game.prototype.updateGameObjects = function (timeDelta) {
+        for (var q = 0; q < this.queue.length; q++) {
+            var queuedAction = this.queue[q];
+            switch (queuedAction.type) {
+                case GameActions.MOVE_LEFT:
+                    this.moveLeft();
+                    break;
+                case GameActions.MOVE_RIGHT:
+                    this.moveRight();
+                    break;
+                case GameActions.MOVE_DOWN:
+                    this.moveDown();
+                    break;
+                case GameActions.MOVE_UP:
+                    this.moveUp();
+                    break;
+                case GameActions.STOP_MOVING:
+                    this.stopWalking();
+                    break;
+                case GameActions.SHOOT_BULLET:
+                    this.shootBullet(queuedAction.params.x, queuedAction.params.y);
+                    break;
+            }
+        }
+        this.queue = [];
         for (var i in this.objects){
             this.objects[i].update(timeDelta);
             var action = this.objects[i].inform({
@@ -232,22 +270,22 @@ function (physicslib, graphicslib, behaviours, directions, states) {
 
         // Player actions
         shootBullet: function(x, y) {
-            game.shootBullet(x, y);
+            game.queueAction(GameActions.SHOOT_BULLET, {"x": x, "y": y});
         },
         moveUp: function(){
-            game.moveUp();
+            game.queueAction(GameActions.MOVE_UP);
         },
         moveDown: function(){
-            game.moveDown();
+            game.queueAction(GameActions.MOVE_DOWN);
         },
         moveLeft: function(){
-            game.moveLeft();
+            game.queueAction(GameActions.MOVE_LEFT);
         },
         moveRight: function(){
-            game.moveRight();
+            game.queueAction(GameActions.MOVE_RIGHT);
         },
         stopWalking: function () {
-            game.stopWalking();
+            game.queueAction(GameActions.STOP_MOVING);
         },
 
         // Game state
