@@ -21,7 +21,7 @@ require(
      'tests/spritemaptest'],
     function(QUnit, vector2tests, clocktests, animationstest, 
              animationstatetest, collisionstest, actorstest,
-             spritemaptest) {
+             spritemaptest, statetransitiontest) {
         // run the tests.
         vector2tests.run();
         clocktests.run();

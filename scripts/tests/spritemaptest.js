@@ -12,12 +12,10 @@ function(spritemap) {
         			    "sprites": {
         			    	"left": {
         			    		"still": {
-        			    			"basic": {
-        			    				"top_left": {
-        			    					"x": 9,
-        			    					"y": 11
-        			    				}
-        			    			}
+    			    				"top_left": {
+    			    					"x": 9,
+    			    					"y": 11
+    			    				}
         			    		}
         			    	}
         			    }
@@ -32,8 +30,8 @@ function(spritemap) {
 
         	var map = new spritemap.SpriteMap("test");
 
-        	var poseDrawer = map.getPose("left", "still", "basic", 
-        		jsonLoader, imageLoader);
+        	var poseDrawer = map.getPose("left", "still", jsonLoader, 
+                imageLoader);
 
         	var fakeContext = {
         		"drawImage": function (image, imageX, imageY,

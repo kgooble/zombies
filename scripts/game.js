@@ -27,9 +27,6 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         }
         this.bounded = bounded;
     };
-    GameObject.prototype.setState = function (state) {
-        this.state = state;
-    };
     GameObject.prototype.isDead = function(){
         return this.behaviour.isDead();
     };
@@ -62,7 +59,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
     Game.prototype.populate = function () {
         this.objects = {
             0: new GameObject("player",
-                       this.graphics.registerSprite("player"),
+                       this.graphics.registerSprite("player", states.IDLE),
                        this.physics.registerRectangle(
                            this.world.center.x, this.world.center.y, 30, 36),
                        behaviours.playerBehaviour(),
@@ -92,9 +89,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         return this.physics.getTopLeftCorner(this.getPhysicsId(objectId));
     };
     Game.prototype.queueAction = function (action, extraParams){
-        console.log("queueing action!", action, extraParams);
         this.queue.push({"type": action, "params": extraParams});
-        console.log("quee is now", this.queue);
     };
     Game.prototype.moveUp = function () {
         this.moveInDirection(directions.UP);
@@ -111,16 +106,17 @@ function (physicslib, graphicslib, behaviours, directions, states) {
     Game.prototype.moveInDirection = function (direction) {
         this.physics.moveInDirection(this.getPhysicsId(this.playerId), 
                 direction);
-        this.objects[this.playerId].setState(states.WALKING);
+        this.setGameObjectState(this.playerId, states.WALKING);
     };
     Game.prototype.stopWalking = function () {
-        this.objects[this.playerId].setState(states.IDLE);
+        this.setGameObjectState(this.playerId, states.IDLE);
         this.physics.removeConstantVelocity(this.getPhysicsId(this.playerId));
     };
     Game.prototype.moveTarget = function (x, y){
         this.physics.moveTo(this.targetId, x, y);
     };
     Game.prototype.shootBullet = function (x, y){
+        this.setGameObjectState(this.playerId, states.SHOOTING);
         var playerX = this.getPosition(this.playerId).x;
         var playerY = this.getPosition(this.playerId).y;
         var bullet = new GameObject(
@@ -157,6 +153,9 @@ function (physicslib, graphicslib, behaviours, directions, states) {
             }
         }
     };
+    Game.prototype.setGameObjectState = function (objectId, state) {
+        this.graphics.setState(this.getGraphicsId(objectId), state);
+    };
     Game.prototype.updateGameObjects = function (timeDelta) {
         for (var q = 0; q < this.queue.length; q++) {
             var queuedAction = this.queue[q];
@@ -191,12 +190,12 @@ function (physicslib, graphicslib, behaviours, directions, states) {
             if (action.type === "move") {
                 this.physics.addConstantVelocity(this.getPhysicsId(i),
                     action.speed, action.xDirection,action.yDirection);
-                this.objects[i].setState(states.WALKING);
+                this.setGameObjectState(i, states.WALKING);
             }
             var posn = this.getPosition(i);
             if (this.objects[i].isDead() || 
                     (this.objects[i].isBounded() && 
-                        this.outOfBounds(posn.x, posn.y))){
+                     this.outOfBounds(posn.x, posn.y))){
                 this.physics.destroy(this.getPhysicsId(i));
                 this.graphics.destroy(this.getGraphicsId(i));
                 delete this.objects[i];
@@ -212,7 +211,6 @@ function (physicslib, graphicslib, behaviours, directions, states) {
             this.graphics.drawObject(ctx, 
                     this.getGraphicsId(j),
                     { shape:    this.physics.getShape(this.getPhysicsId(j)),
-                      state:    this.objects[j].state,
                       forward:  this.physics.getForward(this.getPhysicsId(j)),
                       topLeftCorner: this.getTopLeftCorner(this.getPhysicsId(j))
                     });
@@ -227,7 +225,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
             this.timeSinceLastZombie = 0;
             var spawnPoint = this.world.getRandomSpawnPoint();
             var newZombie = new GameObject("zombie",
-                    this.graphics.registerSprite("zombie"),
+                    this.graphics.registerSprite("zombie", states.IDLE),
                     this.physics.registerRectangle(spawnPoint.x, spawnPoint.y, 29, 34), // TODO get zombie height/width from sprite?
                     behaviours.zombieBehaviour());
             this.addEntity(newZombie);

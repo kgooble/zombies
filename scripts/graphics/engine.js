@@ -1,18 +1,21 @@
 define(['./jsonloader', './imageloader', './animations', './spritemap', 
         '../directions', '../states'], 
 function(jsonloader, imageloader, animations, spritemap, directions, states){
-    var SpriteRenderer = function(animator, sprite) {
+    var SpriteRenderer = function(animator, sprite, initialState) {
         this.animator = animator;
         this.sprite = sprite; 
+        this.state = initialState;
     };
     SpriteRenderer.prototype.update = function(timeDelta) {
-        this.animator.update(timeDelta);
+        var result = this.animator.update(timeDelta);
+        this.state = result;
     };
     SpriteRenderer.prototype.draw = function (ctx, props) {
         var shape = props.shape;
         var facing = props.forward;
         var topLeftCorner = props.topLeftCorner;
-        var state = props.state;
+        //var state = props.state;
+        var state = this.state;
 
         this.animator.setState(state);
         var poseName = this.animator.getPoseName();
@@ -30,8 +33,18 @@ function(jsonloader, imageloader, animations, spritemap, directions, states){
             default:
                 poseOrientation = "forward";
         }
-        var pose = this.sprite.getPose(poseOrientation, poseName, "basic", jsonloader, imageloader);
+        var pose = this.sprite.getPose(poseOrientation, 
+            poseName, jsonloader, imageloader);
+        if (pose == null) {
+            console.log("Pose was null so getting default:", 
+                this.animator.getDefaultPoseName());
+            pose = this.sprite.getPose(poseOrientation, 
+                this.animator.getDefaultPoseName(), jsonloader, imageloader);
+        }
         pose.draw(ctx, topLeftCorner);
+    };
+    SpriteRenderer.prototype.setState = function (state) {
+        this.state = state;
     };
     var CircleRenderer = function(strokeColour, fillColour){
         this.strokeColour = strokeColour;
@@ -150,14 +163,19 @@ function(jsonloader, imageloader, animations, spritemap, directions, states){
     GraphicsEngine.prototype.getSpriteMap = function(spriteName) {
         return jsonloader.getSpriteMap(spriteName);
     };
-    GraphicsEngine.prototype.registerSprite = function(spriteName) {
+    GraphicsEngine.prototype.registerSprite = function(spriteName, initialState) {
         return this.addObject(new SpriteRenderer(
-                    new animations.AnimationController(states.IDLE, 
+                    new animations.AnimationController(initialState, 
                         this.getAnimations(spriteName)),
-                    new spritemap.SpriteMap(spriteName)));
+                    new spritemap.SpriteMap(spriteName), initialState));
     };
     GraphicsEngine.prototype.destroy = function(objectId){
         delete this.objects[objectId];
+    };
+    GraphicsEngine.prototype.setState = function (objectId, state) {
+        if (this.objects[objectId].setState) {
+            this.objects[objectId].setState(state);
+        }
     };
 
     var engine = new GraphicsEngine();
@@ -193,11 +211,14 @@ function(jsonloader, imageloader, animations, spritemap, directions, states){
         registerRectangle: function(strokeColour, fillColour){
             return engine.registerRectangle(strokeColour, fillColour);
         },
-        registerSprite: function(spriteName) {
-            return engine.registerSprite(spriteName);
+        registerSprite: function(spriteName, initialState) {
+            return engine.registerSprite(spriteName, initialState);
         },
-        destroy: function(objectId){
+        destroy: function(objectId) {
             engine.destroy(objectId);
         },
+        setState: function(objectId, state) {
+            engine.setState(objectId, state);
+        }
     };
 });
