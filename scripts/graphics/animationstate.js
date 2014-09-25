@@ -4,7 +4,6 @@ define(['util/clock', 'util/logger'], function (clock, logger, $) {
     var AnimationState = function(name, animation) {
         this.name = name;
         this.animation = animation;
-        logger.log("hi, I'm", name, "and my animations are", animation);
         this.clock = new clock.LimitedClock(this.animation.total_time);
     };
 
@@ -21,7 +20,7 @@ define(['util/clock', 'util/logger'], function (clock, logger, $) {
         return this.finished && !this.animation.loop;
     };
     AnimationState.prototype.reset = function () {
-        console.log("RESETTING Animation State", name);
+        logger.log("RESETTING Animation State", name);
         this.clock.reset();
         this.finished = false;
     };
@@ -61,6 +60,7 @@ define(['util/clock', 'util/logger'], function (clock, logger, $) {
         this.oldState.update(timeDelta);
         this.newState.update(timeDelta);
         if (this.newState.isFinished()) {
+            logger.log("i'm FINISHED!");
             return {
                 stateName: this.oldState.name,
                 state: this.oldState
@@ -75,6 +75,9 @@ define(['util/clock', 'util/logger'], function (clock, logger, $) {
     };
     CombinedAnimationState.prototype.getTimeElapsed = function () {
         return this.newState.getTimeElapsed();
+    };
+    CombinedAnimationState.prototype.canTransition = function () {
+        return false;
     };
     CombinedAnimationState.prototype.reset = function () {
         // This function doesn't make a lot of sense for this state.

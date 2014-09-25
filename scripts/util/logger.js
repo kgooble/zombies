@@ -1,8 +1,8 @@
 define({
     warn: function () {
-        console.warn(arguments);
+        //console.warn.apply(console, arguments);
     },
     log: function(){
-        console.log(arguments);
+        //console.log.apply(console, arguments);
     }
 });

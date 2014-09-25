@@ -1,8 +1,7 @@
-define([], function () {
+define(['./logger'], function (logger) {
     var LimitedClock = function (max){
         this.time = 0;
         this.max = max;
-        console.log("MAX time is", max);
     };
     LimitedClock.prototype.tick = function (delta) {
         this.time += delta;

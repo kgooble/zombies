@@ -16,10 +16,11 @@ define(['util/logger', './animationstate'], function(logger, animationstate) {
         var result = this.animationStates[this.state].update(timeDelta);
         if (result) { 
             if (result.stateName && result.stateName != this.state) {
+                logger.log("after updating, Setting state to", result.stateName);
                 this.state = result.stateName;
                 this.animationStates[this.state] = result.state;
             } else {
-                logger.log("setting state to default!");
+                logger.log("after updating, setting state to default!");
                 this.state = this.animations.default_state;
             }
         }
@@ -32,19 +33,23 @@ define(['util/logger', './animationstate'], function(logger, animationstate) {
         return "still";
     };
     AnimationController.prototype.setState = function (newState) {
+        logger.log("My STate is ", this.state);
         if (this.animationStates[this.state].canTransition(newState)) {
+            logger.log("I'm transitioning! to: ", newState);
             var transitionState = this.animationStates[this.state].getTransitionState(newState);
             var oldStateName = this.state;
             var originalState = this.animationStates[this.state];
+            logger.log("I'm setting my transitioned state to", transitionState);
             this.state = transitionState;
             this.animationStates[transitionState] = this.createState(
                 originalState, oldStateName, transitionState);
         } else if (this.animationStates[newState]) {
+            //logger.log("I have the state ", newState);
             if (this.state !== newState) {
                 this.state = newState;
                 this.animationStates[this.state].reset();
                 if (this.state == "shoot") {
-                    console.log("I SET THE STATE TO SHOOT AND RESET IT ");
+                    logger.log("I SET THE STATE TO SHOOT AND RESET IT ");
                 }
             }
         } else {

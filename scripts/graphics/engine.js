@@ -1,6 +1,6 @@
 define(['./jsonloader', './imageloader', './animations', './spritemap', 
-        '../directions', '../states'], 
-function(jsonloader, imageloader, animations, spritemap, directions, states){
+        '../directions', '../states', '../util/logger'], 
+function(jsonloader, imageloader, animations, spritemap, directions, states, logger){
     var SpriteRenderer = function(animator, sprite, initialState) {
         this.animator = animator;
         this.sprite = sprite; 
@@ -14,10 +14,8 @@ function(jsonloader, imageloader, animations, spritemap, directions, states){
         var shape = props.shape;
         var facing = props.forward;
         var topLeftCorner = props.topLeftCorner;
-        //var state = props.state;
-        var state = this.state;
 
-        this.animator.setState(state);
+        this.animator.setState(this.state);
         var poseName = this.animator.getPoseName();
         var poseOrientation = "forward";
         switch (facing) {
@@ -36,7 +34,7 @@ function(jsonloader, imageloader, animations, spritemap, directions, states){
         var pose = this.sprite.getPose(poseOrientation, 
             poseName, jsonloader, imageloader);
         if (pose == null) {
-            console.log("Pose was null so getting default:", 
+            logger.log("Pose was null so getting default:", 
                 this.animator.getDefaultPoseName());
             pose = this.sprite.getPose(poseOrientation, 
                 this.animator.getDefaultPoseName(), jsonloader, imageloader);
