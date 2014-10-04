@@ -15,7 +15,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
     var ZOMBIE_COLOR = "gray";
     var BULLET_RADIUS = 2;
 
-    var GameObject = function(name, graphicsId, physicsId, behaviour, bounded){
+    var GameObject = function (name, graphicsId, physicsId, behaviour, bounded) {
         this.name = name;
         this.physicsId = physicsId;
         this.graphicsId = graphicsId;
@@ -27,13 +27,13 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         }
         this.bounded = bounded;
     };
-    GameObject.prototype.isDead = function(){
+    GameObject.prototype.isDead = function () {
         return this.behaviour.isDead();
     };
-    GameObject.prototype.update = function(timeDelta){
+    GameObject.prototype.update = function (timeDelta) {
         // TODO
     };
-    GameObject.prototype.isBounded = function() {
+    GameObject.prototype.isBounded = function () {
         return this.bounded;
     };
     GameObject.prototype.onCollision = function (other) {
@@ -48,7 +48,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         this.physics = physicslib;
         this.queue = [];
     };
-    Game.prototype.initialize = function (world){
+    Game.prototype.initialize = function (world) {
         this.graphics.preload();
         this.gameOver = false;
         this.playerId = 0;
@@ -88,7 +88,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
     Game.prototype.getTopLeftCorner = function (objectId) {
         return this.physics.getTopLeftCorner(this.getPhysicsId(objectId));
     };
-    Game.prototype.queueAction = function (action, extraParams){
+    Game.prototype.queueAction = function (action, extraParams) {
         this.queue.push({"type": action, "params": extraParams});
     };
     Game.prototype.moveUp = function () {
@@ -112,10 +112,10 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         this.setGameObjectState(this.playerId, states.IDLE);
         this.physics.removeConstantVelocity(this.getPhysicsId(this.playerId));
     };
-    Game.prototype.moveTarget = function (x, y){
+    Game.prototype.moveTarget = function (x, y) {
         this.physics.moveTo(this.targetId, x, y);
     };
-    Game.prototype.shootBullet = function (x, y){
+    Game.prototype.shootBullet = function (x, y) {
         this.setGameObjectState(this.playerId, states.SHOOTING);
         var playerX = this.getPosition(this.playerId).x;
         var playerY = this.getPosition(this.playerId).y;
@@ -130,7 +130,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         this.physics.faceDirection(this.getPhysicsId(this.playerId), x, y);
         this.addEntity(bullet);
     };
-    Game.prototype.addEntity = function (entity){
+    Game.prototype.addEntity = function (entity) {
         this.objects[this.getNextKey()] = entity;
     };
     Game.prototype.getNextKey = function () {
@@ -138,7 +138,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         this.nextKey++;
         return next;
     };
-    Game.prototype.outOfBounds = function (x, y){
+    Game.prototype.outOfBounds = function (x, y) {
         return !this.world.contains(x, y);
     };
     Game.prototype.detectCollisions = function () {

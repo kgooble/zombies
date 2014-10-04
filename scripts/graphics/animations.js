@@ -44,7 +44,6 @@ define(['util/logger', './animationstate'], function(logger, animationstate) {
             this.animationStates[transitionState] = this.createState(
                 originalState, oldStateName, transitionState);
         } else if (this.animationStates[newState]) {
-            //logger.log("I have the state ", newState);
             if (this.state !== newState) {
                 this.state = newState;
                 this.animationStates[this.state].reset();

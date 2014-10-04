@@ -50,7 +50,8 @@ define(['util/clock', 'util/logger'], function (clock, logger, $) {
         return null;
     };
 
-    var CombinedAnimationState = function (initialStateName, initialState, newStateName, newAnimation) {
+    var CombinedAnimationState = function (initialStateName, initialState, 
+        newStateName, newAnimation) {
         this.oldState = new AnimationState(initialStateName, initialState.animation);
         // Effectively copy the state
         this.oldState.update(initialState.getTimeElapsed());

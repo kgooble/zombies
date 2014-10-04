@@ -1,7 +1,8 @@
 "use strict";
 require.config({
     paths: {
-        'QUnit': 'qunit'
+        'QUnit': 'qunit',
+        jquery: 'libs/jquery-1.11.1'
     },
     shim: {
        'QUnit': {
@@ -18,10 +19,10 @@ require.config({
 require(
     ['QUnit', 'tests/vector2tests', 'tests/clocktests', 'tests/animationstest',
      'tests/animationstatetest', 'tests/collisionstest', 'tests/actorstest',
-     'tests/spritemaptest'],
+     'tests/spritemaptest', 'tests/gametest', 'tests/graphicsenginetest'],
     function(QUnit, vector2tests, clocktests, animationstest, 
              animationstatetest, collisionstest, actorstest,
-             spritemaptest, statetransitiontest) {
+             spritemaptest, gametest, graphicsenginetest) {
         // run the tests.
         vector2tests.run();
         clocktests.run();
@@ -30,6 +31,8 @@ require(
         collisionstest.run();
         actorstest.run();
         spritemaptest.run();
+        gametest.run();
+        graphicsenginetest.run();
 
         // start QUnit.
         QUnit.load();

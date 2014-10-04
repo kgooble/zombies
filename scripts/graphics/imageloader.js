@@ -1,9 +1,9 @@
-define(['./staticfiles'], function(staticfiles){
-    var ImageLoader = function(){
+define(['./staticfiles'], function (staticfiles) {
+    var ImageLoader = function () {
         this.imageMap = {};
     };
 
-    ImageLoader.prototype.getImage = function(name) {
+    ImageLoader.prototype.getImage = function (name) {
         if (this.imageMap[name] !== undefined) {
             return this.imageMap[name];
         } else {
@@ -19,11 +19,11 @@ define(['./staticfiles'], function(staticfiles){
         }
     };
 
-    ImageLoader.prototype.createPath = function(name) {
+    ImageLoader.prototype.createPath = function (name) {
         return staticfiles.createPath(name, "images", "png");
     };
 
-    ImageLoader.prototype.areAllLoaded = function() {
+    ImageLoader.prototype.areAllLoaded = function () {
         for (var imgName in this.imageMap) {
             if (this.imageMap[imgName] === null) {
                 return false;
@@ -41,13 +41,13 @@ define(['./staticfiles'], function(staticfiles){
     var loader = new ImageLoader();
 
     return {
-        getImage: function(name) {
+        getImage: function (name) {
             return loader.getImage(name);
         },
-        preloadImages: function(imageNameList) {
+        preloadImages: function (imageNameList) {
             loader.preloadAll(imageNameList);
         },
-        areAllLoaded: function(){
+        areAllLoaded: function () {
             return loader.areAllLoaded();
         }
     };
