@@ -1,11 +1,12 @@
 "use strict";
 define(['../graphics/engine'],
-function(game) {
+function(graphics) {
     var run = function() {
 
         test("filler test, TODO!", 
         function () {
-            ok(true);
+            var engine = new graphics.GraphicsEngine();
+            ok(true, "TODO!");
         });
 
     };

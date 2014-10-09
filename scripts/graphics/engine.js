@@ -82,48 +82,14 @@ function(jsonloader, imageloader, animations, spritemap, directions, states,
             this.objects[objectId].setState(state);
         }
     };
-
-    var engine = new GraphicsEngine();
+    GraphicsEngine.prototype.preload = function () {
+        imageloader.preloadImages(["zombie", "player"]);
+        jsonloader.preloadJSON(["zombie", "player"]);
+    };
+    GraphicsEngine.prototype.loaded = function () {
+        return jsonloader.areAllLoaded() && imageloader.areAllLoaded();
+    };
     return {
-        preload: function () {
-            imageloader.preloadImages(["zombie", "player"]);
-            jsonloader.preloadJSON(["zombie", "player"]);
-        },
-        loaded: function (ctx) {
-            return jsonloader.areAllLoaded() && imageloader.areAllLoaded();
-        },
-        update: function (timeDelta) {
-            engine.update(timeDelta);
-        },
-        // Draw functions
-        clearScreen: function (ctx) {
-            engine.clearScreen(ctx);
-        },
-        drawObject: function (ctx, objectId, physicalProperties) {
-            engine.drawObject(ctx, objectId, physicalProperties);
-        },
-        drawDebugPoint: function (ctx, x, y){
-            engine.drawDebugPoint(ctx, x, y);
-        },
-        drawGameOver: function (ctx) {
-            engine.drawGameOver(ctx);
-        },
-
-        // Registry functions
-        registerCircle: function (strokeColour, fillColour) {
-            return engine.registerCircle(strokeColour, fillColour);
-        },
-        registerRectangle: function (strokeColour, fillColour) {
-            return engine.registerRectangle(strokeColour, fillColour);
-        },
-        registerSprite: function (spriteName, initialState) {
-            return engine.registerSprite(spriteName, initialState);
-        },
-        destroy: function (objectId) {
-            engine.destroy(objectId);
-        },
-        setState: function (objectId, state) {
-            engine.setState(objectId, state);
-        }
+        GraphicsEngine: GraphicsEngine
     };
 });

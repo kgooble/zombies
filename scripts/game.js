@@ -44,7 +44,7 @@ function (physicslib, graphicslib, behaviours, directions, states) {
     };
 
     var Game = function(){
-        this.graphics = graphicslib;
+        this.graphics = new graphicslib.GraphicsEngine();
         this.physics = physicslib;
         this.queue = [];
     };
