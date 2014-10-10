@@ -10,7 +10,6 @@ function (logger, directions) {
         this.state = result;
     };
     SpriteRenderer.prototype.draw = function (ctx, props, jsonloader, imageloader) {
-        var shape = props.shape;
         var facing = props.forward;
         var topLeftCorner = props.topLeftCorner;
 

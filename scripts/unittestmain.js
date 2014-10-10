@@ -19,11 +19,10 @@ require.config({
 require(
     ['QUnit', 'tests/vector2tests', 'tests/clocktests', 'tests/animationstest',
      'tests/animationstatetest', 'tests/collisionstest', 'tests/actorstest',
-     'tests/spritemaptest', 'tests/gametest', 'tests/graphicsenginetest',
-     'tests/rendererstest'],
+     'tests/spritemaptest', 'tests/gametest', 'tests/rendererstest'],
     function(QUnit, vector2tests, clocktests, animationstest, 
              animationstatetest, collisionstest, actorstest,
-             spritemaptest, gametest, graphicsenginetest, rendererstest) {
+             spritemaptest, gametest, rendererstest) {
         // run the tests.
         vector2tests.run();
         clocktests.run();
@@ -33,7 +32,6 @@ require(
         actorstest.run();
         spritemaptest.run();
         gametest.run();
-        graphicsenginetest.run();
         rendererstest.run();
 
         // start QUnit.

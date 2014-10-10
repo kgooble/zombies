@@ -70,10 +70,10 @@ function(renderers) {
 			};
 			var fakeTopLeft = { "name": "faketopleft" };
 			var fakeJsonLoader = {
-				"name":"json"  // To make sure deepEqual works
+				"name":"json"
 			};
 			var fakeImageLoader = {
-				"name":"image"  // To make sure deepEqual works
+				"name":"image"
 			};
 			var fakeSprite = {
 				getPose: function (orientation, name, jsonLoader, imageLoader) {
@@ -104,7 +104,6 @@ function(renderers) {
 			equal(sprite.state, newState, "state was set correctly after update");
 
 			var fakeProps = {
-				shape: {},
 				forward: "right",
 				topLeftCorner: fakeTopLeft
 			};
