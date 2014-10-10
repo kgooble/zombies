@@ -21,24 +21,25 @@ function ($, input, game, world) {
     ctx.height = CANVAS_HEIGHT;
 
     // TODO preload . show loading screen or something!
+    var theGame = new game.Game();
 
-    game.initialize(new world.World(CANVAS_WIDTH, CANVAS_HEIGHT));
+    theGame.initialize(new world.World(CANVAS_WIDTH, CANVAS_HEIGHT));
 
     var doneLoading = false;
     setInterval(function(){
-        if (game.loaded() && !doneLoading) {
+        if (theGame.loaded() && !doneLoading) {
             doneLoading = true;
-            game.populate();
-            input.initialize(game);
+            theGame.populate();
+            input.initialize(theGame);
         }
     }, 500);
 
 
     var detached = false;
     var fn = function(){
-        game.update(ctx, TIME_DELTA);
-        if (game.isGameOver() && !detached){
-            input.detach(game);
+        theGame.update(ctx, TIME_DELTA);
+        if (theGame.isGameOver() && !detached){
+            input.detach(theGame);
             detached = true;
         }
     };

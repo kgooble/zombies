@@ -245,50 +245,29 @@ function (physicslib, graphicslib, behaviours, directions, states) {
         this.redrawGameObjects(ctx);
     };
 
-    var game = new Game();
+    Game.prototype.shootBulletAction = function(x, y) {
+        this.queueAction(GameActions.SHOOT_BULLET, {"x": x, "y": y});
+    },
+    Game.prototype.moveUpAction = function(){
+        this.queueAction(GameActions.MOVE_UP);
+    },
+    Game.prototype.moveDownAction = function(){
+        this.queueAction(GameActions.MOVE_DOWN);
+    },
+    Game.prototype.moveLeftAction = function(){
+        this.queueAction(GameActions.MOVE_LEFT);
+    },
+    Game.prototype.moveRightAction = function(){
+        this.queueAction(GameActions.MOVE_RIGHT);
+    },
+    Game.prototype.stopWalkingAction = function () {
+        this.queueAction(GameActions.STOP_MOVING);
+    },
+    Game.prototype.isGameOver = function(){
+        return this.gameOver;
+    }
+
     return {
-        // Game initialization
-        initialize: function(world) {
-            game.initialize(world);
-        },
-        loaded: function () {
-            return game.loaded();
-        },
-        populate: function () {
-            game.populate();
-        },
-
-        // Game actions
-        update: function (ctx, timeDelta) {
-            game.update(ctx, timeDelta);
-        },
-        moveTarget: function(x, y) {
-            game.moveTarget(x, y);
-        },
-
-        // Player actions
-        shootBullet: function(x, y) {
-            game.queueAction(GameActions.SHOOT_BULLET, {"x": x, "y": y});
-        },
-        moveUp: function(){
-            game.queueAction(GameActions.MOVE_UP);
-        },
-        moveDown: function(){
-            game.queueAction(GameActions.MOVE_DOWN);
-        },
-        moveLeft: function(){
-            game.queueAction(GameActions.MOVE_LEFT);
-        },
-        moveRight: function(){
-            game.queueAction(GameActions.MOVE_RIGHT);
-        },
-        stopWalking: function () {
-            game.queueAction(GameActions.STOP_MOVING);
-        },
-
-        // Game state
-        isGameOver: function(){
-            return game.gameOver;
-        }
+        Game: Game
     };
 });

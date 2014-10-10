@@ -12,14 +12,14 @@ define(['jquery', 'keyevent', 'util/logger'], function ($, keyevent, logger){
     };
     var makeClickFunction = function(game){
         return function(event){
-            game.shootBullet(event.pageX, event.pageY);
+            game.shootBulletAction(event.pageX, event.pageY);
         };
     };
     var makeKeyUpFunction = function (game) {
         return function (event) {
             if (event.which === lastPressedMovementKey) {
                 lastPressedMovementKey = null;
-                game.stopWalking();
+                game.stopWalkingAction();
             }
         };
     };
@@ -28,16 +28,16 @@ define(['jquery', 'keyevent', 'util/logger'], function ($, keyevent, logger){
             lastPressedMovementKey = event.which;
             switch(event.which){
                 case keyevent.DOM_VK_UP:
-                    game.moveUp();
+                    game.moveUpAction();
                     break;
                 case keyevent.DOM_VK_DOWN:
-                    game.moveDown();
+                    game.moveDownAction();
                     break;
                 case keyevent.DOM_VK_LEFT:
-                    game.moveLeft();
+                    game.moveLeftAction();
                     break;
                 case keyevent.DOM_VK_RIGHT:
-                    game.moveRight();
+                    game.moveRightAction();
             }
         };
     };
