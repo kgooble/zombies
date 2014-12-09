@@ -5,18 +5,29 @@ define(['./actors'], function (actors) {
     var Behaviour = function (actor) {
         this.stats = new Stats();
         this.actor = actor;
+        this.forces = [];
     };
-    Behaviour.prototype.isDead = function(){
+    Behaviour.prototype.isDead = function (){
         return this.stats.dead;
+    };
+    Behaviour.prototype.update = function () {
+        if (this.forces.length == 0) {
+            return null;
+        }
+        var goals = {
+            "type": "move",
+            "forces": this.forces
+        };
+        this.forces = [];
+        return goals;
     };
     Behaviour.prototype.onCollision = function(other){
         this.actor.onCollision(other.actor, this.stats);
     };
-    Behaviour.prototype.calculateAction = function(data) {
-        if (this.actor.calculateAction !== undefined){
-            return this.actor.calculateAction(data);
+    Behaviour.prototype.onForce = function (force) {
+        if (force) {
+            this.forces.push(force);
         }
-        return {};
     };
 
     var emptyBehaviour = function () { 

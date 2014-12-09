@@ -6,6 +6,9 @@ define([], function(){
     Vector2.prototype.subtract = function (other) {
         return new Vector2(this.x - other.x, this.y - other.y);
     };
+    Vector2.prototype.times = function(scalar) {
+        return new Vector2(this.x * scalar, this.y * scalar);
+    };
     Vector2.prototype.magnitude = function () {
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     };

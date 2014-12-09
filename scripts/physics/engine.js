@@ -1,5 +1,5 @@
-define(['./shapes', './collisions', './vector2', 'directions'], 
-function(shapes, collisions, vector2, directions){
+define(['./shapes', './collisions', './vector2', 'directions', './forces'], 
+function(shapes, collisions, vector2, directions, forces){
     var translateDirectionToVector = function (direction) {
         switch (direction) {
             case directions.UP:
@@ -88,6 +88,18 @@ function(shapes, collisions, vector2, directions){
     PhysicsEngine.prototype.removeCollisions = function(objectId){
         this.objects[objectId].collides = false;
     };
+
+    PhysicsEngine.prototype.calculateForces = function (object1, object2) {
+        return forces.calculateForces({
+            "kind": object1.kind,
+            "position": this.getPosition(object1.id)
+        }, {
+            "kind": object2.kind,
+            "position": this.getPosition(object2.id)
+        });
+    };
+
+
     PhysicsEngine.prototype.isInvalidIndex = function (objectId) {
         return this.objects[objectId] === undefined;
     };
@@ -120,19 +132,23 @@ function(shapes, collisions, vector2, directions){
     PhysicsEngine.prototype.addManualSpeed = function(objectId, xSpeed, ySpeed) {
         this.objects[objectId].manualSpeed = new vector2.Vector2(xSpeed, ySpeed);
     };
-    PhysicsEngine.prototype.addConstantVelocity = function(objectId, speed, 
-            xDirection, yDirection) {
-        this.objects[objectId].constantVelocity = new Velocity(speed, 
-                new vector2.Vector2(xDirection, yDirection));
+    PhysicsEngine.prototype.addConstantVelocity = function (objectId, forces) {
+        // TODO assuming only one force
+        if (!forces || forces.length == 0) {
+            return;
+        }
+        var force = forces[0];
+        var velocity = new Velocity(force.magnitude,
+            force.on(this.getPosition(objectId)));
+        this.objects[objectId].constantVelocity = velocity;
     };
-    PhysicsEngine.prototype.removeConstantVelocity = function(objectId, speed, 
-            xDirection, yDirection) {
+    PhysicsEngine.prototype.removeConstantVelocity = function(objectId) {
         this.objects[objectId].constantVelocity = null;
     };
     PhysicsEngine.prototype.moveInDirection = function(objectId, direction){
         var vec = translateDirectionToVector(direction);
         var obj = this.objects[objectId];
-        this.addConstantVelocity(objectId, obj.manualSpeed.x, vec.x, vec.y);
+        this.addConstantVelocity(objectId, [forces.constantForce(vec, obj.manualSpeed.x)]);
     };
     PhysicsEngine.prototype.faceDirection = function (objectId, x, y) {
         var obj = this.objects[objectId];
@@ -182,6 +198,11 @@ function(shapes, collisions, vector2, directions){
             engine.removeCollisions(objectId);
         },
 
+        // Forces
+        calculateForces: function (object1, object2) {
+            return engine.calculateForces(object1, object2);
+        },
+
         // Getters
         getPosition: function(objectId) {
             return engine.getPosition(objectId);
@@ -200,11 +221,11 @@ function(shapes, collisions, vector2, directions){
         addManualSpeed: function(objectId, xSpeed, ySpeed) {
             engine.addManualSpeed(objectId, xSpeed, ySpeed);
         },
-        addConstantVelocity: function(objectId, speed, xDirection, yDirection) {
-            engine.addConstantVelocity(objectId, speed, xDirection, yDirection);
+        addConstantVelocity: function(objectId, forces) {
+            engine.addConstantVelocity(objectId, forces);
         },
-        removeConstantVelocity: function(objectId, speed, xDirection, yDirection) {
-            engine.removeConstantVelocity(objectId, speed, xDirection, yDirection);
+        removeConstantVelocity: function(objectId) {
+            engine.removeConstantVelocity(objectId);
         },
         moveInDirection: function(objectId, direction){
             engine.moveInDirection(objectId, direction);
