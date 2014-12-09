@@ -133,8 +133,7 @@ function(shapes, collisions, vector2, directions, forces){
         this.objects[objectId].manualSpeed = new vector2.Vector2(xSpeed, ySpeed);
     };
     PhysicsEngine.prototype.addConstantVelocity = function (objectId, forces) {
-        // TODO assuming only one force
-        if (!forces || forces.length == 0) {
+        if (!forces || forces.length === 0) {
             return;
         }
         var force = forces[0];

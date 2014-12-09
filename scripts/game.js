@@ -263,25 +263,25 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
 
     Game.prototype.shootBulletAction = function(x, y) {
         this.queueAction(GameActions.SHOOT_BULLET, {"x": x, "y": y});
-    },
+    };
     Game.prototype.moveUpAction = function(){
         this.queueAction(GameActions.MOVE_UP);
-    },
+    };
     Game.prototype.moveDownAction = function(){
         this.queueAction(GameActions.MOVE_DOWN);
-    },
+    };
     Game.prototype.moveLeftAction = function(){
         this.queueAction(GameActions.MOVE_LEFT);
-    },
+    };
     Game.prototype.moveRightAction = function(){
         this.queueAction(GameActions.MOVE_RIGHT);
-    },
+    };
     Game.prototype.stopWalkingAction = function () {
         this.queueAction(GameActions.STOP_MOVING);
-    },
+    };
     Game.prototype.isGameOver = function(){
         return this.gameOver;
-    }
+    };
 
     return {
         Game: Game

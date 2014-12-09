@@ -1,5 +1,6 @@
 define(['./vector2', '../objectkinds'], function (vector2, objectkinds) {
 	var ZOMBIE_TO_PLAYER_ATTRACTION = 10;
+	var ZOMBIE_TO_WALL_DETRACTION = 3;
 
 	var PullingForce = function (center, magnitude) {
 		if (typeof(center) != vector2.Vector2) {
@@ -18,7 +19,7 @@ define(['./vector2', '../objectkinds'], function (vector2, objectkinds) {
 		}
 		this.center = center;
 		this.magnitude = magnitude;
-	}
+	};
 	PushingForce.prototype.on = function (point) {
 		if (typeof(point) != vector2.Vector2) {
 			point = new vector2.Vector2(point.x, point.y);
@@ -39,6 +40,8 @@ define(['./vector2', '../objectkinds'], function (vector2, objectkinds) {
 	var calculateForces = function (object1, object2) {
 		if (object1.kind == objectkinds.PLAYER && object2.kind == objectkinds.ZOMBIE){
 			return new PullingForce(object1.position, ZOMBIE_TO_PLAYER_ATTRACTION);
+		} else if (object1.kind == objectkinds.WALL && object2.kind == objectkinds.ZOMBIE) {
+			return new PushingForce(object1.position, ZOMBIE_TO_WALL_DETRACTION);
 		}
 		return null;
 	};

@@ -3,6 +3,7 @@ define([], function () {
 		ZOMBIE: "zombie",
 		PLAYER: "player",
 		BULLET: "bullet",
+		WALL: "wall",
 		MISC: "miscellaneous"
 	};
 });
