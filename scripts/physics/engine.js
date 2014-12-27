@@ -132,11 +132,11 @@ function(shapes, collisions, vector2, directions, forces){
     PhysicsEngine.prototype.addManualSpeed = function(objectId, xSpeed, ySpeed) {
         this.objects[objectId].manualSpeed = new vector2.Vector2(xSpeed, ySpeed);
     };
-    PhysicsEngine.prototype.addConstantVelocity = function (objectId, forces) {
-        if (!forces || forces.length === 0) {
+    PhysicsEngine.prototype.addConstantVelocity = function (objectId, actingForces) {
+        if (!actingForces || actingForces.length === 0) {
             return;
         }
-        var force = forces[0];
+        var force = forces.applyAll(actingForces, this.getPosition(objectId));
         var velocity = new Velocity(force.magnitude,
             force.on(this.getPosition(objectId)));
         this.objects[objectId].constantVelocity = velocity;

@@ -9,6 +9,13 @@ function(vector2) {
                       "subtract should subtract each component and return new vector2");
 
         });
+        test("vector2 add test",
+        function () {
+          deepEqual(new vector2.Vector2(1, 6).add(new vector2.Vector2(3, 0)),
+                    new vector2.Vector2(4, 6),
+                    "vector add should add each component and return new vector2");
+
+        });
         test('vector2 normalization and length test',
         function () {
             deepEqual(new vector2.Vector2(5, 0).normalized(),

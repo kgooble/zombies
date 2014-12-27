@@ -13,6 +13,7 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
     var BULLET_SPEED = 100;
     var PLAYER_COLOR = "red";
     var TARGET_COLOR = "blue";
+    var WALL_COLOR = "green";
     var ZOMBIE_COLOR = "gray";
     var BULLET_RADIUS = 2;
 
@@ -54,7 +55,7 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
         this.gameOver = false;
         this.playerId = 0;
         this.targetId = 1;
-        this.nextKey = 2;
+        this.nextKey = 3;
         this.world = world;
     };
     Game.prototype.populate = function () {
@@ -68,6 +69,12 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
             1: new GameObject(objectkinds.MISC,
                        this.graphics.registerCircle(TARGET_COLOR),
                        this.physics.registerCircle(0, 0, 10),
+                       behaviours.emptyBehaviour(),
+                       false),
+            2: new GameObject(objectkinds.WALL,
+                       this.graphics.registerRectangle(WALL_COLOR, WALL_COLOR),
+                       this.physics.registerRectangle(this.world.center.x-20, 
+                                                      this.world.center.y-10, 10, 40),
                        behaviours.emptyBehaviour(),
                        false)
             };

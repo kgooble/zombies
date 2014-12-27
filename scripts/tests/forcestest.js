@@ -25,7 +25,7 @@ function(forces, vector2, objectkinds) {
             var f = forces.calculateForces(
                 {"kind": objectkinds.PLAYER, "position": new vector2.Vector2(4, 1)}, 
                 {"kind": objectkinds.ZOMBIE});
-            deepEqual(f.on({x: 0, y: 0}), new vector2.Vector2(4, 1));
+            deepEqual(f.on({x: 0, y: 0}), new vector2.Vector2(2, 0.5));
         });
 
         test("bullet has no force on zombie",
@@ -42,6 +42,20 @@ function(forces, vector2, objectkinds) {
             var f = forces.constantForce({x: 5, y: 5}, 10);
             deepEqual(f.on({x: 0, y: 0}), new vector2.Vector2(1, 1).normalized().times(10));
 
+        });
+
+        test("apply multiple forces gets a resulting force",
+        function () {
+            var f1 = forces.pullToward({x: 0, y: 0});
+            var f2 = forces.pushAwayFrom({x: 0, y: 0}, 2);
+            var thePoint = new vector2.Vector2(1, 1);
+            var expectedResultForce = new forces.constantForce(thePoint.normalized(), 
+                                                               thePoint.magnitude());
+
+            var actualResultForce = forces.applyAll([f1, f2], thePoint);
+            ok(Math.abs(actualResultForce.magnitude - expectedResultForce.magnitude) < 0.000001);
+            ok(actualResultForce.direction.subtract(expectedResultForce.direction).magnitude() < 0.00001);
+            ok(expectedResultForce.on(thePoint).subtract(new vector2.Vector2(1, 1)).magnitude() < 0.00001);
         });
 
     };
