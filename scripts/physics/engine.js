@@ -1,5 +1,5 @@
-define(['./shapes', './collisions', './vector2', 'directions', './forces'], 
-function(shapes, collisions, vector2, directions, forces){
+define(['./shapes', './collisions', './vector2', 'directions'], 
+function(shapes, collisions, vector2, directions){
     var translateDirectionToVector = function (direction) {
         switch (direction) {
             case directions.UP:
@@ -132,14 +132,10 @@ function(shapes, collisions, vector2, directions, forces){
     PhysicsEngine.prototype.addManualSpeed = function(objectId, xSpeed, ySpeed) {
         this.objects[objectId].manualSpeed = new vector2.Vector2(xSpeed, ySpeed);
     };
-    PhysicsEngine.prototype.addConstantVelocity = function (objectId, actingForces) {
-        if (!actingForces || actingForces.length === 0) {
-            return;
-        }
-        var force = forces.applyAll(actingForces, this.getPosition(objectId));
-        var velocity = new Velocity(force.magnitude,
-            force.on(this.getPosition(objectId)));
-        this.objects[objectId].constantVelocity = velocity;
+    PhysicsEngine.prototype.addConstantVelocity = function(objectId, speed, 
+            xDirection, yDirection) {
+        this.objects[objectId].constantVelocity = new Velocity(speed,
+                new vector2.Vector2(xDirection, yDirection));
     };
     PhysicsEngine.prototype.removeConstantVelocity = function(objectId) {
         this.objects[objectId].constantVelocity = null;
@@ -147,7 +143,7 @@ function(shapes, collisions, vector2, directions, forces){
     PhysicsEngine.prototype.moveInDirection = function(objectId, direction){
         var vec = translateDirectionToVector(direction);
         var obj = this.objects[objectId];
-        this.addConstantVelocity(objectId, [forces.constantForce(vec, obj.manualSpeed.x)]);
+        this.addConstantVelocity(objectId, obj.manualSpeed.x, vec.x, vec.y);
     };
     PhysicsEngine.prototype.faceDirection = function (objectId, x, y) {
         var obj = this.objects[objectId];
@@ -220,8 +216,8 @@ function(shapes, collisions, vector2, directions, forces){
         addManualSpeed: function(objectId, xSpeed, ySpeed) {
             engine.addManualSpeed(objectId, xSpeed, ySpeed);
         },
-        addConstantVelocity: function(objectId, forces) {
-            engine.addConstantVelocity(objectId, forces);
+        addConstantVelocity: function(objectId, speed, xDirection, yDirection) {
+            engine.addConstantVelocity(objectId, speed, xDirection, yDirection);
         },
         removeConstantVelocity: function(objectId) {
             engine.removeConstantVelocity(objectId);

@@ -1,6 +1,6 @@
 define(['physics/engine', 'graphics/engine', 'ai/behaviours', 
-        'directions', 'states', 'physics/forces', 'objectkinds'], 
-function (physicslib, graphicslib, behaviours, directions, states, forces, objectkinds) {
+        'directions', 'states', 'objectkinds'], 
+function (physicslib, graphicslib, behaviours, directions, states, objectkinds) {
     var GameActions = {
         MOVE_UP: 0,
         MOVE_DOWN: 1,
@@ -32,8 +32,8 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
     GameObject.prototype.isDead = function () {
         return this.behaviour.isDead();
     };
-    GameObject.prototype.update = function (timeDelta) {
-        return this.behaviour.update(timeDelta);
+    GameObject.prototype.update = function (timeDelta, data) {
+        return this.behaviour.update(timeDelta, data);
     };
     GameObject.prototype.isBounded = function () {
         return this.bounded;
@@ -134,7 +134,7 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
                 behaviours.bulletBehaviour()
                 );
         this.physics.addConstantVelocity(bullet.physicsId, 
-                [forces.constantForce({"x": x - playerX, "y": y - playerY}, BULLET_SPEED)]);
+                BULLET_SPEED, x - playerX, y - playerY);
         this.physics.faceDirection(this.getPhysicsId(this.playerId), x, y);
         this.addEntity(bullet);
     };
@@ -164,21 +164,6 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
             }
         }
     };
-    Game.prototype.calculateForces = function () {
-        for (var i in this.objects){
-            for (var j in this.objects) {
-                if (i === j) {
-                    continue;
-                }
-                var forces = this.physics.calculateForces(
-                        {"id": this.getPhysicsId(i), "kind": this.objects[i].kind}, 
-                        {"id": this.getPhysicsId(j), "kind": this.objects[j].kind});
-                if (forces){
-                    this.objects[j].onForce(forces);
-                }
-            }
-        }
-    }; 
     Game.prototype.setGameObjectState = function (objectId, state) {
         this.graphics.setState(this.getGraphicsId(objectId), state);
     };
@@ -208,10 +193,14 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
         }
         this.queue = [];
         for (var i in this.objects){
-            var goals = this.objects[i].update(timeDelta);
+            var goals = this.objects[i].update(timeDelta, 
+                {"player_location": this.physics.getPosition(this.getPhysicsId(this.playerId)),
+                "my_location": this.physics.getPosition(this.getPhysicsId(i))
+                }
+                );
             if (goals && goals.type === "move") {
                 this.physics.addConstantVelocity(this.getPhysicsId(i),
-                    goals.forces);
+                    goals.speed, goals.xDirection, goals.yDirection);
                 this.setGameObjectState(i, states.WALKING);
             }
             var posn = this.getPosition(i);
@@ -261,7 +250,6 @@ function (physicslib, graphicslib, behaviours, directions, states, forces, objec
         this.graphics.update(timeDelta);
         this.physics.update(timeDelta);
         this.detectCollisions();
-        this.calculateForces();
         this.updateGameObjects(timeDelta);
         this.possiblySpawnEnemies(timeDelta);
         this.graphics.clearScreen(ctx);
