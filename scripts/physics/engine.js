@@ -24,6 +24,9 @@ function(shapes, collisions, vector2, directions){
     Velocity.prototype.y = function() {
         return this.speed * this.direction.y;
     };
+    Velocity.prototype.reverse = function () {
+        return new Velocity(this.speed, this.direction.negative());
+    };
 
     var PhysicsObject = function(shape, position){
         this.shape = shape;
@@ -88,17 +91,6 @@ function(shapes, collisions, vector2, directions){
     PhysicsEngine.prototype.removeCollisions = function(objectId){
         this.objects[objectId].collides = false;
     };
-
-    PhysicsEngine.prototype.calculateForces = function (object1, object2) {
-        return forces.calculateForces({
-            "kind": object1.kind,
-            "position": this.getPosition(object1.id)
-        }, {
-            "kind": object2.kind,
-            "position": this.getPosition(object2.id)
-        });
-    };
-
 
     PhysicsEngine.prototype.isInvalidIndex = function (objectId) {
         return this.objects[objectId] === undefined;
@@ -178,69 +170,7 @@ function(shapes, collisions, vector2, directions){
         delete this.objects[objectId];
     };
 
-    var engine = new PhysicsEngine();
-
     return {
-        update: function(timeDelta) {
-            engine.update(timeDelta);
-        },
-
-        // Collisions
-        collision: function(objectId1, objectId2) {
-            return engine.collision(objectId1, objectId2);
-        },
-        removeCollisions: function(objectId){
-            engine.removeCollisions(objectId);
-        },
-
-        // Forces
-        calculateForces: function (object1, object2) {
-            return engine.calculateForces(object1, object2);
-        },
-
-        // Getters
-        getPosition: function(objectId) {
-            return engine.getPosition(objectId);
-        },
-        getTopLeftCorner: function(objectId) {
-            return engine.getTopLeftCorner(objectId);
-        },
-        getForward: function (objectId) {
-            return engine.getForward(objectId);
-        },
-        getShape: function(objectId) {
-            return engine.getShape(objectId);
-        },
-
-        // Set physics properties
-        addManualSpeed: function(objectId, xSpeed, ySpeed) {
-            engine.addManualSpeed(objectId, xSpeed, ySpeed);
-        },
-        addConstantVelocity: function(objectId, speed, xDirection, yDirection) {
-            engine.addConstantVelocity(objectId, speed, xDirection, yDirection);
-        },
-        removeConstantVelocity: function(objectId) {
-            engine.removeConstantVelocity(objectId);
-        },
-        moveInDirection: function(objectId, direction){
-            engine.moveInDirection(objectId, direction);
-        },
-        faceDirection: function (objectId, x, y) {
-            engine.faceDirection(objectId, x, y);
-        },
-        moveTo: function(objectId, x, y){
-            engine.moveTo(objectId, x, y);
-        },
-
-        // Registry API
-        registerCircle: function(x, y, radius) {
-            return engine.registerCircle(x, y, radius);
-        },
-        registerRectangle: function(x, y, width, height) {
-            return engine.registerRectangle(x, y, width, height);
-        },
-        destroy: function (objectId) {
-            engine.destroy(objectId);
-        },
+        PhysicsEngine: PhysicsEngine
     };
 });

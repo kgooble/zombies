@@ -47,7 +47,7 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
 
     var Game = function(){
         this.graphics = new graphicslib.GraphicsEngine();
-        this.physics = physicslib;
+        this.physics = new physicslib.PhysicsEngine();
         this.queue = [];
     };
     Game.prototype.initialize = function (world) {
@@ -75,7 +75,7 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
                        this.graphics.registerRectangle(WALL_COLOR, WALL_COLOR),
                        this.physics.registerRectangle(this.world.center.x-20, 
                                                       this.world.center.y-10, 10, 40),
-                       behaviours.emptyBehaviour(),
+                       behaviours.wallBehaviour(),
                        false)
             };
         this.physics.removeCollisions(this.getPhysicsId(this.targetId));
@@ -157,7 +157,7 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
                 }
                 var collision = this.physics.collision(
                         this.getPhysicsId(i), this.getPhysicsId(j));
-                if (collision){
+                if (collision) {
                     this.objects[i].onCollision(this.objects[j]);
                     this.objects[j].onCollision(this.objects[i]);
                 }
@@ -248,6 +248,8 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
             return;
         }
         this.graphics.update(timeDelta);
+        //var collisions = this.physics.updatePositionsAndCalculateCollisions(timeDelta);
+        //this.processCollisions(collisions);
         this.physics.update(timeDelta);
         this.detectCollisions();
         this.updateGameObjects(timeDelta);

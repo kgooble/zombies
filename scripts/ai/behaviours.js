@@ -22,6 +22,9 @@ define(['./actors'], function (actors) {
     var emptyBehaviour = function () { 
         return new Behaviour(new actors.EmptyActor());
     };
+    var wallBehaviour = function () { 
+        return new Behaviour(new actors.WallActor());
+    };
     var bulletBehaviour = function () {
         return new Behaviour(new actors.BulletActor());
     };
@@ -34,6 +37,7 @@ define(['./actors'], function (actors) {
 
     return {
         emptyBehaviour: emptyBehaviour,
+        wallBehaviour: wallBehaviour,
         playerBehaviour: playerBehaviour,
         zombieBehaviour: zombieBehaviour,
         bulletBehaviour: bulletBehaviour
