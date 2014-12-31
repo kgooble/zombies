@@ -1,6 +1,7 @@
-define(['physics/engine', 'graphics/engine', 'ai/behaviours', 
+define(['physics/engine', 'physics/entitykinds', 'graphics/engine', 'ai/behaviours', 
         'directions', 'states', 'objectkinds'], 
-function (physicslib, graphicslib, behaviours, directions, states, objectkinds) {
+function (physicslib, physicsentitykinds, graphicslib, behaviours, directions,
+          states, objectkinds) {
     var GameActions = {
         MOVE_UP: 0,
         MOVE_DOWN: 1,
@@ -57,35 +58,44 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
         this.targetId = 1;
         this.nextKey = 3;
         this.world = world;
+        this.physicsIdReverseLookup = {};
     };
     Game.prototype.populate = function () {
         this.objects = {
             0: new GameObject(objectkinds.PLAYER,
                        this.graphics.registerSprite("player", states.IDLE),
-                       this.physics.registerRectangle(
+                       this.physics.registerRectangle(physicsentitykinds.CHARACTER,
                            this.world.center.x, this.world.center.y, 30, 36),
                        behaviours.playerBehaviour(),
                        false),
             1: new GameObject(objectkinds.MISC,
                        this.graphics.registerCircle(TARGET_COLOR),
-                       this.physics.registerCircle(0, 0, 10),
+                       this.physics.registerCircle(physicsentitykinds.NON_PHYSICAL, 0, 0, 10),
                        behaviours.emptyBehaviour(),
                        false),
             2: new GameObject(objectkinds.WALL,
                        this.graphics.registerRectangle(WALL_COLOR, WALL_COLOR),
-                       this.physics.registerRectangle(this.world.center.x-20, 
+                       this.physics.registerRectangle(physicsentitykinds.INANIMATE_OBJECT, 
+                                                      this.world.center.x-25, 
                                                       this.world.center.y-10, 10, 40),
                        behaviours.wallBehaviour(),
                        false)
             };
         this.physics.removeCollisions(this.getPhysicsId(this.targetId));
         this.physics.addManualSpeed(this.getPhysicsId(this.playerId), 20, 20);
+
+        this.physicsIdReverseLookup[this.getPhysicsId(0)] = 0;
+        this.physicsIdReverseLookup[this.getPhysicsId(1)] = 1;
+        this.physicsIdReverseLookup[this.getPhysicsId(2)] = 2;
     };
     Game.prototype.loaded = function () {
         return this.graphics.loaded();
     };
     Game.prototype.getPhysicsId = function (objectId) {
         return this.objects[objectId].physicsId;
+    };
+    Game.prototype.getObjectIdFromPhysicsId = function (physicsId) {
+        return this.physicsIdReverseLookup[physicsId];
     };
     Game.prototype.getGraphicsId = function (objectId) {
         return this.objects[objectId].graphicsId;
@@ -130,7 +140,7 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
         var bullet = new GameObject(
                 objectkinds.BULLET,
                 this.graphics.registerCircle("yellow", "yellow"),
-                this.physics.registerCircle(playerX, playerY, BULLET_RADIUS),
+                this.physics.registerCircle(physicsentitykinds.WEAPON, playerX, playerY, BULLET_RADIUS),
                 behaviours.bulletBehaviour()
                 );
         this.physics.addConstantVelocity(bullet.physicsId, 
@@ -139,7 +149,13 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
         this.addEntity(bullet);
     };
     Game.prototype.addEntity = function (entity) {
-        this.objects[this.getNextKey()] = entity;
+        var objectId = this.getNextKey();
+        this.objects[objectId] = entity;
+        this.physicsIdReverseLookup[entity.physicsId] = objectId;
+    };
+    Game.prototype.destroy = function (objectId) {
+        delete this.physicsIdReverseLookup[this.getPhysicsId(objectId)];
+        delete this.objects[objectId];
     };
     Game.prototype.getNextKey = function () {
         var next = this.nextKey;
@@ -149,19 +165,12 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
     Game.prototype.outOfBounds = function (x, y) {
         return !this.world.contains(x, y);
     };
-    Game.prototype.detectCollisions = function () {
-        for (var i in this.objects){
-            for (var j in this.objects) {
-                if (i === j) {
-                    continue;
-                }
-                var collision = this.physics.collision(
-                        this.getPhysicsId(i), this.getPhysicsId(j));
-                if (collision) {
-                    this.objects[i].onCollision(this.objects[j]);
-                    this.objects[j].onCollision(this.objects[i]);
-                }
-            }
+    Game.prototype.processCollisions = function (collisions) {
+        for (var i = 0; i < collisions.length; i++) {
+            var obj1 = this.getObjectIdFromPhysicsId(collisions[i].object1);
+            var obj2 = this.getObjectIdFromPhysicsId(collisions[i].object2);
+            this.objects[obj1].onCollision(this.objects[obj2]);
+            this.objects[obj2].onCollision(this.objects[obj1]);
         }
     };
     Game.prototype.setGameObjectState = function (objectId, state) {
@@ -209,7 +218,7 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
                      this.outOfBounds(posn.x, posn.y))){
                 this.physics.destroy(this.getPhysicsId(i));
                 this.graphics.destroy(this.getGraphicsId(i));
-                delete this.objects[i];
+                this.destroy(i);
                 if (i == this.playerId){
                     this.gameOver = true;
                     break;
@@ -237,7 +246,9 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
             var spawnPoint = this.world.getRandomSpawnPoint();
             var newZombie = new GameObject(objectkinds.ZOMBIE,
                     this.graphics.registerSprite("zombie", states.IDLE),
-                    this.physics.registerRectangle(spawnPoint.x, spawnPoint.y, 29, 34), // TODO get zombie height/width from sprite?
+                    this.physics.registerRectangle(
+                        physicsentitykinds.CHARACTER, 
+                        spawnPoint.x, spawnPoint.y, 29, 34), // TODO get zombie height/width from sprite?
                     behaviours.zombieBehaviour());
             this.addEntity(newZombie);
         }
@@ -248,10 +259,8 @@ function (physicslib, graphicslib, behaviours, directions, states, objectkinds) 
             return;
         }
         this.graphics.update(timeDelta);
-        //var collisions = this.physics.updatePositionsAndCalculateCollisions(timeDelta);
-        //this.processCollisions(collisions);
-        this.physics.update(timeDelta);
-        this.detectCollisions();
+        var collisions = this.physics.updatePositionsAndCalculateCollisions(timeDelta);
+        this.processCollisions(collisions);
         this.updateGameObjects(timeDelta);
         this.possiblySpawnEnemies(timeDelta);
         this.graphics.clearScreen(ctx);

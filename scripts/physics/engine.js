@@ -1,5 +1,5 @@
-define(['./shapes', './collisions', './vector2', 'directions'], 
-function(shapes, collisions, vector2, directions){
+define(['./shapes', './collisions', './vector2', 'directions', './entitykinds'], 
+function(shapes, collisions, vector2, directions, entitykinds){
     var translateDirectionToVector = function (direction) {
         switch (direction) {
             case directions.UP:
@@ -28,18 +28,54 @@ function(shapes, collisions, vector2, directions){
         return new Velocity(this.speed, this.direction.negative());
     };
 
-    var PhysicsObject = function(shape, position){
+    var PhysicsObject = function(layer, shape, position){
+        this.layer = layer;
         this.shape = shape;
         this.position = position;
         this.forward = directions.DOWN;
         this.collides = true;
     };
-    PhysicsObject.prototype.update = function(timeDelta){
-        if (this.constantVelocity){
-            this.position.x += this.constantVelocity.x() * timeDelta;
-            this.position.y += this.constantVelocity.y() * timeDelta;
-            this.updateForwardVector({x: this.constantVelocity.x(), y: this.constantVelocity.y()});
+    PhysicsObject.prototype.projectFuture = function (timeDelta) {
+        this.futurePosition = this.calculateNewPosition(timeDelta);
+        this.futureForwardVector = this.calculateNewForwardVector();
+    };
+    PhysicsObject.prototype.clearFuturePositionAndForward = function (timeDelta) {
+        this.futurePosition = this.position;
+        this.futureForwardVector = this.forward;
+    };
+    PhysicsObject.prototype.calculateNewPosition = function (timeDelta) {
+        if (this.constantVelocity) {
+            return this.position.add({
+                "x": this.constantVelocity.x() * timeDelta,
+                "y": this.constantVelocity.y() * timeDelta
+            });
         }
+        return this.position;
+    };
+    PhysicsObject.prototype.calculateNewForwardVector = function (direction) {
+        if (direction === undefined) {
+            if (this.constantVelocity) {
+                direction = {"x": this.constantVelocity.x(), "y": this.constantVelocity.y()};
+            } else {
+                return this.forward;
+            }
+        }
+        var x = direction.x;
+        var y = direction.y;
+        if (x > 0 && Math.abs(x) > Math.abs(y)) {
+            return directions.RIGHT;
+        } else if (x < 0 && Math.abs(x) > Math.abs(y)) {
+            return directions.LEFT;
+        } else if (y > 0) {
+            return directions.DOWN;
+        } else {
+            return directions.UP;
+        }
+    };
+    PhysicsObject.prototype.commitChanges = function (timeDelta) {
+        this.position = this.futurePosition;
+        this.forward = this.futureForwardVector;
+        this.clearFuturePositionAndForward();
     };
     PhysicsObject.prototype.updateForwardVector = function (direction) {
         var x = direction.x;
@@ -79,10 +115,32 @@ function(shapes, collisions, vector2, directions){
         this.nextKey = 0;
     };
 
-    PhysicsEngine.prototype.update = function(timeDelta){
+    PhysicsEngine.prototype.updatePositionsAndCalculateCollisions = function (timeDelta) {
         for (var i in this.objects) {
-            this.objects[i].update(timeDelta);
+            this.objects[i].projectFuture(timeDelta);
         }
+        var collisions = [];
+        for (var i in this.objects) {
+            for (var j in this.objects) {
+                if (i === j) {
+                    continue;
+                }
+                var collision = this.collision(i, j);
+                if (collision) {
+                    collisions.push({"collision": collision,
+                                     "object1": i,
+                                     "object2": j});
+                    if (this.isDisallowedIntersection(i, j)) {
+                        this.objects[i].clearFuturePositionAndForward();
+                        this.objects[j].clearFuturePositionAndForward();
+                    }
+                }
+            }
+        }
+        for (var i in this.objects) {
+            this.objects[i].commitChanges(timeDelta);
+        }
+        return collisions;
     };
     PhysicsEngine.prototype.collision = function(objectId1, objectId2) {
         if (objectId1 === objectId2) return false;
@@ -90,6 +148,14 @@ function(shapes, collisions, vector2, directions){
     };
     PhysicsEngine.prototype.removeCollisions = function(objectId){
         this.objects[objectId].collides = false;
+    };
+    PhysicsEngine.prototype.isDisallowedIntersection = function (objectId1, objectId2) {
+        var o1 = this.objects[objectId1];
+        var o2 = this.objects[objectId2];
+        if (o1.layer === entitykinds.INANIMATE_OBJECT && o2.layer !== entitykinds.NON_PHYSICAL) {
+            return true;
+        }
+        return false;
     };
 
     PhysicsEngine.prototype.isInvalidIndex = function (objectId) {
@@ -156,13 +222,13 @@ function(shapes, collisions, vector2, directions){
         this.objects[key] = object;
         return key;
     };
-    PhysicsEngine.prototype.registerCircle = function(x, y, radius) {
-        return this.addObject(new PhysicsObject(
+    PhysicsEngine.prototype.registerCircle = function(layer, x, y, radius) {
+        return this.addObject(new PhysicsObject(layer,
                     new shapes.Circle(radius), 
                     new vector2.Vector2(x, y)));
     };
-    PhysicsEngine.prototype.registerRectangle = function(x, y, width, height) {
-        return this.addObject(new PhysicsObject(
+    PhysicsEngine.prototype.registerRectangle = function(layer, x, y, width, height) {
+        return this.addObject(new PhysicsObject(layer,
                     new shapes.Rectangle(width, height), 
                     new vector2.Vector2(x, y)));
     };

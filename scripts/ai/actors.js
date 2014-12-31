@@ -32,7 +32,7 @@ define([], function () {
     };
    
     BulletActor.prototype.onCollision = function (other, stats) {
-        if (other instanceof ZombieActor){
+        if (other instanceof ZombieActor || other instanceof WallActor){
             stats.dead = true;
         }
     };
