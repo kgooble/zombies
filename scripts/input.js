@@ -7,12 +7,12 @@ define(['jquery', 'keyevent', 'util/logger'], function ($, keyevent, logger){
 
     var makeMouseMoveFunction = function(game){
         return function(event){
-            game.moveTarget(event.pageX, event.pageY);
+            game.moveTarget(event.offsetX, event.offsetY);
         };
     };
     var makeClickFunction = function(game){
         return function(event){
-            game.shootBulletAction(event.pageX, event.pageY);
+            game.shootBulletAction(event.offsetX, event.offsetY);
         };
     };
     var makeKeyUpFunction = function (game) {
