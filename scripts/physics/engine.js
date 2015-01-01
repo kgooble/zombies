@@ -96,16 +96,18 @@ function(shapes, collisions, vector2, directions, entitykinds){
     PhysicsObject.prototype.getHeight = function() {
         return this.shape.getHeight();
     };
-    PhysicsObject.prototype.intersects = function (other) {
+    PhysicsObject.prototype.willIntersect = function (other) {
         if (!this.collides || !other.collides) {
             return false;
         }
         if (this.shape instanceof shapes.Rectangle && other.shape instanceof shapes.Rectangle){
-            return collisions.rectangleRectangleCollision({shape: this.shape, position: this.position}, 
-                    {shape:other.shape, position:other.position});
+            return collisions.rectangleRectangleCollision(
+                    {shape: this.shape, position: this.futurePosition}, 
+                    {shape:other.shape, position:other.futurePosition});
         } else if (this.shape instanceof shapes.Rectangle && other.shape instanceof shapes.Circle) {
-            return collisions.rectangleCircleCollision({shape: this.shape, position: this.position},
-                    {shape:other.shape, position: other.position});
+            return collisions.rectangleCircleCollision(
+                    {shape: this.shape, position: this.futurePosition},
+                    {shape:other.shape, position: other.futurePosition});
         }
         return false;
     };
@@ -125,7 +127,7 @@ function(shapes, collisions, vector2, directions, entitykinds){
                 if (i === j) {
                     continue;
                 }
-                var collision = this.collision(i, j);
+                var collision = this.futureCollision(i, j);
                 if (collision) {
                     collisions.push({"collision": collision,
                                      "object1": i,
@@ -142,9 +144,9 @@ function(shapes, collisions, vector2, directions, entitykinds){
         }
         return collisions;
     };
-    PhysicsEngine.prototype.collision = function(objectId1, objectId2) {
+    PhysicsEngine.prototype.futureCollision = function(objectId1, objectId2) {
         if (objectId1 === objectId2) return false;
-        return this.objects[objectId1].intersects(this.objects[objectId2]);
+        return this.objects[objectId1].willIntersect(this.objects[objectId2]);
     };
     PhysicsEngine.prototype.removeCollisions = function(objectId){
         this.objects[objectId].collides = false;
@@ -152,7 +154,7 @@ function(shapes, collisions, vector2, directions, entitykinds){
     PhysicsEngine.prototype.isDisallowedIntersection = function (objectId1, objectId2) {
         var o1 = this.objects[objectId1];
         var o2 = this.objects[objectId2];
-        if (o1.layer === entitykinds.INANIMATE_OBJECT && o2.layer !== entitykinds.NON_PHYSICAL) {
+        if ((o1.layer === entitykinds.INANIMATE_OBJECT && o2.layer !== entitykinds.NON_PHYSICAL) || (o2.layer === entitykinds.INANIMATE_OBJECT && o1.layer !== entitykinds.NON_PHYSICAL)) {
             return true;
         }
         return false;
