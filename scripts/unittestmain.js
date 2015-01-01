@@ -20,11 +20,11 @@ require(
     ['QUnit', 'tests/vector2tests', 'tests/clocktests', 'tests/animationstest',
      'tests/animationstatetest', 'tests/collisionstest', 'tests/actorstest',
      'tests/spritemaptest', 'tests/gametest', 'tests/rendererstest', 'tests/forcestest',
-     'tests/minheaptest'],
+     'tests/minheaptest', 'tests/graphtest'],
     function(QUnit, vector2tests, clocktests, animationstest, 
              animationstatetest, collisionstest, actorstest,
              spritemaptest, gametest, rendererstest, forcestest,
-             minheaptest) {
+             minheaptest, graphtest) {
         // run the tests.
         vector2tests.run();
         clocktests.run();
@@ -37,6 +37,7 @@ require(
         rendererstest.run();
         forcestest.run();
         minheaptest.run();
+        graphtest.run();
 
         // start QUnit.
         QUnit.load();
