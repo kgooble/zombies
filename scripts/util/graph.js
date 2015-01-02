@@ -83,14 +83,29 @@ define(['./priorityqueue'], function (priorityqueue) {
 			nearestTenY += this.pixelDistance;
 		}
 
+		if (nearestTenX < 0) {
+			nearestTenX = 0;
+		}
+		if (nearestTenX >= this.width){
+			nearestTenX = this.width - this.pixelDistance;
+		}
+		if (nearestTenY < 0) {
+			nearestTenY = 0;
+		}
+		if (nearestTenY >= this.height){
+			nearestTenY = this.height - this.pixelDistance;
+		}
+
 		return this.nodes[[nearestTenX, nearestTenY]];
 	};
 
 	PixelGraph.prototype.findNeighbours = function (node) {
 		var neighbours = [];
-		if (node.y - this.pixelDistance > 0) {
+		var maxHeight = this.height - this.pixelDistance;
+		var maxWidth = this.width - this.pixelDistance;
+		if (node.y - this.pixelDistance >= 0) {
 			var y = node.y - this.pixelDistance;
-			if (node.x - this.pixelDistance > 0) {
+			if (node.x - this.pixelDistance >= 0) {
 				neighbours.push(this.nodes[
 					[node.x - this.pixelDistance, y]
 				]);
@@ -98,26 +113,26 @@ define(['./priorityqueue'], function (priorityqueue) {
 			neighbours.push(this.nodes[
 				[node.x, y]
 			]);
-			if (node.x + this.pixelDistance > 0) {
+			if (node.x + this.pixelDistance <= maxWidth) {
 				neighbours.push(this.nodes[
 					[node.x + this.pixelDistance, y]
 				]);
 			}
 		}
 		var y = node.y;
-		if (node.x - this.pixelDistance > 0) {
+		if (node.x - this.pixelDistance >= 0) {
 			neighbours.push(this.nodes[
 				[node.x - this.pixelDistance, y]
 			]);
 		}
-		if (node.x + this.pixelDistance > 0) {
+		if (node.x + this.pixelDistance <= maxWidth) {
 			neighbours.push(this.nodes[
 				[node.x + this.pixelDistance, y]
 			]);
 		}
-		if (node.y + this.pixelDistance < this.height) {
+		if (node.y + this.pixelDistance <= maxHeight) {
 			var y = node.y + this.pixelDistance;
-			if (node.x - this.pixelDistance > 0) {
+			if (node.x - this.pixelDistance >= 0) {
 				neighbours.push(this.nodes[
 					[node.x - this.pixelDistance, y]
 				]);
@@ -125,7 +140,7 @@ define(['./priorityqueue'], function (priorityqueue) {
 			neighbours.push(this.nodes[
 				[node.x, y]
 			]);
-			if (node.x + this.pixelDistance > 0) {
+			if (node.x + this.pixelDistance <= maxWidth) {
 				neighbours.push(this.nodes[
 					[node.x + this.pixelDistance, y]
 				]);
