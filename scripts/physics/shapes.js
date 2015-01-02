@@ -50,6 +50,10 @@ define(['underscore', './vector2'], function (_, vector2) {
     };
 
     var LineSegment = function (a, b, c, d) {
+        /* A line segment has the property s.t 
+            x = a * t + c
+            y = b * t + d
+           where t is a parameter between 0 and 1 */
         if (a.hasOwnProperty("x") && a.hasOwnProperty("y") && c === undefined && d === undefined) {
             this.c = a.x;
             this.d = a.y;
