@@ -1,6 +1,7 @@
 require.config({
     paths: {
         jquery: 'libs/jquery-1.11.1',
+        underscore: 'libs/underscore-min',
         util: 'util/'
     }
 });

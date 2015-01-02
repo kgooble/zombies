@@ -2,6 +2,7 @@
 require.config({
     paths: {
         'QUnit': 'qunit',
+        underscore: 'libs/underscore-min',
         jquery: 'libs/jquery-1.11.1'
     },
     shim: {
@@ -20,11 +21,11 @@ require(
     ['QUnit', 'tests/vector2tests', 'tests/clocktests', 'tests/animationstest',
      'tests/animationstatetest', 'tests/collisionstest', 'tests/actorstest',
      'tests/spritemaptest', 'tests/gametest', 'tests/rendererstest', 'tests/forcestest',
-     'tests/minheaptest', 'tests/graphtest'],
+     'tests/minheaptest', 'tests/graphtest', 'tests/shapestest'],
     function(QUnit, vector2tests, clocktests, animationstest, 
              animationstatetest, collisionstest, actorstest,
              spritemaptest, gametest, rendererstest, forcestest,
-             minheaptest, graphtest) {
+             minheaptest, graphtest, shapestest) {
         // run the tests.
         vector2tests.run();
         clocktests.run();
@@ -38,6 +39,7 @@ require(
         forcestest.run();
         minheaptest.run();
         graphtest.run();
+        shapestest.run();
 
         // start QUnit.
         QUnit.load();

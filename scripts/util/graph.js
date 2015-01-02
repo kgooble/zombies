@@ -149,6 +149,7 @@ define(['./priorityqueue'], function (priorityqueue) {
 		return neighbours;
 	};
 
+	// This could be plugged in.
 	PixelGraph.prototype.heuristic = function (start, goal) {
 		return Math.sqrt(Math.pow(Math.abs(goal.x - start.x), 2) + Math.pow(Math.abs(goal.y - start.y), 2));
 	};

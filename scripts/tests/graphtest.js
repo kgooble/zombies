@@ -20,6 +20,13 @@ function(graph) {
             equal(node.y, 20);
         });
 
+        test("find center node of polygon works , TODO",
+        function () {
+            var g = new graph.Graph(100, 100, 10);
+            ok(true, "Need to write actual test");
+
+        });
+
         test("find neighbours gets all surrounding nodes for top left corner node",
         function () {
             var g = new graph.Graph(100, 100, 10);
@@ -41,12 +48,10 @@ function(graph) {
         test("find neighbours gets all surrounding nodes for bottom right corner node",
         function () {
             var g = new graph.Graph(100, 100, 10);
-            console.log(g);
             var node = g.findNearestNode(100, 100);
             equal(node.x, 90);
             equal(node.y, 90);
             var neighbours = g.findNeighbours(node);
-            console.log(neighbours);
 
             equal(neighbours.length, 3);
             equal(neighbours[0].x, 80);
