@@ -27,7 +27,11 @@ function(vector2, shapes, pgraph) {
                     spawnZone.position.y - spawnZone.shape.getHeight() / 2);
         return new vector2.Vector2(x, y);
     };
-
+    World.prototype.getPathBetween = function (p1, p2) {
+        var n1 = this.graph.findNearestNode(p1);
+        var n2 = this.graph.findNearestNode(p2);
+        return this.graph.calculatePath(n1, n2);
+    };
 
     return {
         World: World

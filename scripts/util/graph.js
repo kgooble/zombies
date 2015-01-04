@@ -93,6 +93,10 @@ define(['./priorityqueue'], function (priorityqueue) {
 	};
 
 	PixelGraph.prototype.findNearestNode = function (x, y) {
+        if (y === undefined) {
+            y = x.y;
+            x = x.x;
+        }
 		var nearestTenX = Math.floor(x / this.pixelDistance) * this.pixelDistance;
 		var nearestTenY = Math.floor(y / this.pixelDistance) * this.pixelDistance;
 		if (x % this.pixelDistance > (this.pixelDistance / 2) && x < this.width) {
@@ -174,12 +178,12 @@ define(['./priorityqueue'], function (priorityqueue) {
 	};
 
 	PixelGraph.prototype.reconstructPath = function (cameFrom, current) {
-		var path = [current];
+		var pathnodes = [current];
 		while (cameFrom.has(current)) {
 			current = cameFrom.get(current);
-			path.push(current);
+			pathnodes.push(current);
 		}
-		return path;
+		return new Path(pathnodes);
 	};
 	PixelGraph.prototype.distanceBetween = function (start, end) {
 		if (end.wall) {
@@ -204,9 +208,7 @@ define(['./priorityqueue'], function (priorityqueue) {
 		while (!openSet.isEmpty()) {
 			var current = openSet.dequeue();
 			if (current == goal) {
-				var path = this.reconstructPath(cameFrom, goal);
-				this.path = path;
-				return null;
+				return this.reconstructPath(cameFrom, goal);
 			}
 
 			closedSet.set(current, true);

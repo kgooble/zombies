@@ -203,8 +203,12 @@ function (physicslib, physicsentitykinds, graphicslib, behaviours, directions,
         this.queue = [];
         for (var i in this.objects){
             var goals = this.objects[i].update(timeDelta, 
-                {"player_location": this.physics.getPosition(this.getPhysicsId(this.playerId)),
-                "my_location": this.physics.getPosition(this.getPhysicsId(i))
+                {
+                    "player_location": this.physics.getPosition(
+                        this.getPhysicsId(this.playerId)),
+                    "my_location": this.physics.getPosition(
+                        this.getPhysicsId(i)),
+                    "world": this.world
                 }
                 );
             if (goals && goals.type === "move") {
