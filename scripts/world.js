@@ -1,4 +1,5 @@
-define(['./physics/vector2', './physics/shapes'], function(vector2, shapes) {
+define(['./physics/vector2', './physics/shapes', './util/graph'], 
+function(vector2, shapes, pgraph) {
     var SpawnZone = function(position, shape) {
         this.position = position;
         this.shape = shape;
@@ -8,6 +9,7 @@ define(['./physics/vector2', './physics/shapes'], function(vector2, shapes) {
         this.width = width;
         this.height = height;
         this.center = new vector2.Vector2(width/2, height/2);
+        this.graph = new pgraph.Graph(width, height);
         this.spawnZones = [
             new SpawnZone(new vector2.Vector2(width/8, height/2),
                           new shapes.Rectangle(width/4, height))

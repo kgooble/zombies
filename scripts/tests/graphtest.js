@@ -41,7 +41,6 @@ function(graph, shapes) {
             var nodes = g.findEdgeNodesOfPolygon(polygon);
 
             equal(nodes.length, 36);
-            console.log(nodes);
             for (var i = 0; i < 9; i++) {
                 equal(nodes[i+1].x - nodes[i].x, 10);
                 equal(nodes[i+1].y, nodes[i].y);
