@@ -17,10 +17,18 @@ define([], function () {
         }
     };
     ZombieActor.prototype.calculateAction = function (data) {
+        var path = data.world.getPathBetween(data.my_location, data.player_location);
+        var dir = null;
+        if (path) {
+            dir = path.getDirection();
+        } else {
+            dir = {"x": data.player_location.x - data.my_location.x,
+                   "y": data.player_location.y - data.my_location.y};
+        }
         return { 
             type: "move", speed: this.speed, 
-            xDirection: (data.player_location.x - data.my_location.x),
-            yDirection: (data.player_location.y - data.my_location.y)
+            xDirection: dir.x,
+            yDirection: dir.y
         };
     };
 

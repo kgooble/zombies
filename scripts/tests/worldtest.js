@@ -10,7 +10,15 @@ function(world, v) {
 
             var path = w.getPathBetween(p1, p2);
 
-            deepEqual(path.getDirection(), {"x": 10, "y": 10});
+            deepEqual(path.getDirection(), new v.Vector2(10, 10));
+        });
+
+        test("world can add a wall to its graph representation and alters path between two points",
+        function () {
+            var w = new world.World(100, 100);
+            w.addWall(10, 10, 20, 20);
+            var path = w.getPathBetween({"x": 0, "y": 0}, {"x": 40, "y": 40});
+            deepEqual(path.getDirection(), new v.Vector2(10, 0));
         });
     };
     return {run: run};

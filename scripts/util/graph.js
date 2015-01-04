@@ -1,4 +1,4 @@
-define(['./priorityqueue'], function (priorityqueue) {
+define(['./priorityqueue', '../physics/vector2'], function (priorityqueue, vector2) {
 	var DEFAULT_NODE_PIXEL_DISTANCE = 10;
 
 	var Node = function (x, y) {
@@ -10,9 +10,15 @@ define(['./priorityqueue'], function (priorityqueue) {
 	Node.prototype.toggleMarked = function () {
 		this.marked = !this.marked;
 	};
+    Node.prototype.setWall = function () {
+        this.wall = true;
+    };
 	Node.prototype.toggleWall = function () {
 		this.wall = !this.wall;
 	};
+    Node.prototype.isWall = function () {
+        return this.wall;
+    };
 	Node.prototype.toString = function () {
 		return "(" + this.x + ", " + this.y + ")";
 	};
@@ -24,10 +30,11 @@ define(['./priorityqueue'], function (priorityqueue) {
 
 	Path.prototype.getDirection = function () {
 		if (this.nodeList.length < 2) {
-			return {x:0, y:0};
+            return vector2.ZERO;
 		}
-		return {x: (this.nodeList[this.length-2].x - this.nodeList[this.length-1].x), 
-				y: (this.nodeList[this.length-2].y - this.nodeList[this.length-1].y)};
+        var x = (this.nodeList[this.length-2].x - this.nodeList[this.length-1].x);
+        var y = (this.nodeList[this.length-2].y - this.nodeList[this.length-1].y);
+        return new vector2.Vector2(x, y);
 	};
 
 	var PixelGraph = function (width, height, pixelDistance) {

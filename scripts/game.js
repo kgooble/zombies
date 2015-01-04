@@ -61,23 +61,33 @@ function (physicslib, physicsentitykinds, graphicslib, behaviours, directions,
         this.physicsIdReverseLookup = {};
     };
     Game.prototype.populate = function () {
+
+        var wallX = 120;
+        var wallY = 100;
+        var wallWidth = 10;
+        var wallHeight = 40;
         this.objects = {
             0: new GameObject(objectkinds.PLAYER,
                        this.graphics.registerSprite("player", states.IDLE),
-                       this.physics.registerRectangle(physicsentitykinds.CHARACTER,
-                           this.world.center.x, this.world.center.y, 30, 36),
+                       this.physics.registerRectangle(
+                           physicsentitykinds.CHARACTER,
+                           this.world.center.x, this.world.center.y, 
+                           30, 36),
                        behaviours.playerBehaviour(),
                        false),
             1: new GameObject(objectkinds.MISC,
                        this.graphics.registerCircle(TARGET_COLOR),
-                       this.physics.registerCircle(physicsentitykinds.NON_PHYSICAL, 0, 0, 10),
+                       this.physics.registerCircle(
+                           physicsentitykinds.NON_PHYSICAL, 0, 0, 10),
                        behaviours.emptyBehaviour(),
                        false),
             2: new GameObject(objectkinds.WALL,
                        this.graphics.registerRectangle(WALL_COLOR, WALL_COLOR),
-                       this.physics.registerRectangle(physicsentitykinds.INANIMATE_OBJECT, 
-                                                      this.world.center.x-25, 
-                                                      this.world.center.y-10, 10, 40),
+                       this.physics.registerRectangle(
+                           physicsentitykinds.INANIMATE_OBJECT, 
+                           wallX, 
+                           wallY, 
+                           wallWidth, wallHeight),
                        behaviours.wallBehaviour(),
                        false)
             };
@@ -87,6 +97,8 @@ function (physicslib, physicsentitykinds, graphicslib, behaviours, directions,
         this.physicsIdReverseLookup[this.getPhysicsId(0)] = 0;
         this.physicsIdReverseLookup[this.getPhysicsId(1)] = 1;
         this.physicsIdReverseLookup[this.getPhysicsId(2)] = 2;
+
+        this.world.addWall(wallX, wallY, wallWidth, wallHeight);
     };
     Game.prototype.loaded = function () {
         return this.graphics.loaded();

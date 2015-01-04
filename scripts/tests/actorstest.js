@@ -29,6 +29,14 @@ function(actors) {
         test("zombie's next action is to move towards player location",
         function () {
             var data = {
+                world: { "getPathBetween" : function () { 
+                           return {
+                               "getDirection": function () {
+                                   return {"x": 3, "y": 4};
+                               }
+                           };
+                          } 
+                       },
                 player_location: {x: 5, y: 5},
                 my_location:     {x: 2, y: 1}
             };

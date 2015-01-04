@@ -9,7 +9,7 @@ function(vector2, shapes, pgraph) {
         this.width = width;
         this.height = height;
         this.center = new vector2.Vector2(width/2, height/2);
-        this.graph = new pgraph.Graph(width, height);
+        this.graph = new pgraph.Graph(width, height, 40);
         this.spawnZones = [
             new SpawnZone(new vector2.Vector2(width/8, height/2),
                           new shapes.Rectangle(width/4, height))
@@ -31,6 +31,23 @@ function(vector2, shapes, pgraph) {
         var n1 = this.graph.findNearestNode(p1);
         var n2 = this.graph.findNearestNode(p2);
         return this.graph.calculatePath(n1, n2);
+    };
+
+    World.prototype.addWall = function (tlx, tly, width, height) {
+        var wallPolygon = new shapes.Polygon([
+                new shapes.LineSegment({"x": tlx, "y": tly}, 
+                                       {"x": tlx+width, "y": tly}),
+                new shapes.LineSegment({"x": tlx+width, "y": tly},
+                                       {"x": tlx+width, "y": tly+height}),
+                new shapes.LineSegment({"x": tlx+width, "y": tly+height},
+                                       {"x": tlx, "y": tly+height}),
+                new shapes.LineSegment({"x": tlx, "y": tly+height},
+                                       {"x": tlx, "y": tly}),
+        ]);
+        var wallNodes = this.graph.findEdgeNodesOfPolygon(wallPolygon);
+        for (var i = 0; i < wallNodes.length; i++) {
+            wallNodes[i].setWall();
+        }
     };
 
     return {
