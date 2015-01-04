@@ -49,6 +49,14 @@ define(['underscore', './vector2'], function (_, vector2) {
         return sumOfPoints.divide(this.lines.length);
     };
 
+    Polygon.prototype.getSpacedPointsAlongPerimeter = function (pointDistance) {
+        var points = [];
+        for (var i = 0; i < this.lines.length; i++) {
+            points = points.concat(this.lines[i].getSpacedPoints(pointDistance));
+        }
+        return points;
+    };
+
     var LineSegment = function (a, b, c, d) {
         /* A line segment has the property s.t 
             x = a * t + c

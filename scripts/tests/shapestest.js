@@ -38,6 +38,43 @@ function(shapes, v) {
             deepEqual(centroid, new v.Vector2(0.5, 0.5));
         });
 
+        test("find points along edge of polygon using line segments",
+        function () {
+            var p = new shapes.Polygon([
+                new shapes.LineSegment(new v.Vector2(0, 0), new v.Vector2(10, 0)),
+                new shapes.LineSegment(new v.Vector2(10, 0), new v.Vector2(10, 10)),
+                new shapes.LineSegment(new v.Vector2(10, 10), new v.Vector2(0, 10)),
+                new shapes.LineSegment(new v.Vector2(0, 10), new v.Vector2(0, 0))
+            ]);
+
+            var points = p.getSpacedPointsAlongPerimeter(1);
+            equal(points.length, 44);
+            for (var i = 0; i < 11; i++) {
+                ok(points[i+1].x - points[i].x < 1.000001);
+                ok(Math.abs(points[i+1].y - points[i].y) < 0.000001);
+            }
+            ok(Math.abs(points[10].x - points[11].x) < 0.000001);
+            ok(Math.abs(points[10].y - points[11].y) < 0.000001);
+            for (var i = 11; i < 22; i++) {
+                ok(Math.abs(points[i+1].x - points[i].x) < 0.000001);
+                ok(points[i+1].y - points[i].y < 1.000001);
+            }
+            ok(Math.abs(points[21].x - points[22].x) < 0.000001);
+            ok(Math.abs(points[21].y - points[22].y) < 0.000001);
+            for (var i = 22; i < 33; i++) {
+                ok(points[i].x - points[i+1].x < 1.000001);
+                ok(Math.abs(points[i+1].y - points[i].y) < 0.000001);
+            }
+            ok(Math.abs(points[32].x - points[33].x) < 0.000001);
+            ok(Math.abs(points[32].y - points[33].y) < 0.000001);
+            for (var i = 33; i < 43; i++) {
+                ok(Math.abs(points[i+1].x - points[i].x) < 0.000001);
+                ok(points[i].y - points[i+1].y < 1.000001);
+            }
+            ok(Math.abs(points[0].x - points[43].x) < 0.000001);
+            ok(Math.abs(points[0].y - points[43].y) < 0.000001);
+        });
+
         test("calculate point along linesegment",
         function () {
             var line = new shapes.LineSegment(1, 1);

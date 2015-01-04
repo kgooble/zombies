@@ -1,6 +1,12 @@
 "use strict";
-define(['../util/graph'],
-function(graph) {
+define(['../util/graph', '../physics/shapes'],
+function(graph, shapes) {
+    var polygon = new shapes.Polygon([
+        new shapes.LineSegment({"x": 0, "y": 0}, {"x": 100, "y": 0}),
+        new shapes.LineSegment({"x": 100, "y": 0}, {"x": 100, "y": 100}),
+        new shapes.LineSegment({"x": 100, "y": 100}, {"x": 0, "y": 100}),
+        new shapes.LineSegment({"x": 0, "y": 100}, {"x": 0, "y": 0})
+    ]);
     var run = function() {
         test("find nearest node in a pixel graph works",
         function () {
@@ -20,10 +26,38 @@ function(graph) {
             equal(node.y, 20);
         });
 
-        test("find center node of polygon works , TODO",
+        test("find center node of polygon works",
         function () {
             var g = new graph.Graph(100, 100, 10);
-            ok(true, "Need to write actual test");
+            var node = g.findCenterNodeOfPolygon(polygon);
+
+            equal(node.x, 50);
+            equal(node.y, 50);
+        });
+
+        test("find edge nodes of polygon gets all nodes along edge of polygons line segments",
+        function () {
+            var g = new graph.Graph(100, 100, 10);
+            var nodes = g.findEdgeNodesOfPolygon(polygon);
+
+            equal(nodes.length, 36);
+            console.log(nodes);
+            for (var i = 0; i < 9; i++) {
+                equal(nodes[i+1].x - nodes[i].x, 10);
+                equal(nodes[i+1].y, nodes[i].y);
+            }
+            for (var i = 9; i < 18; i++) {
+                equal(nodes[i+1].x, nodes[i].x);
+                equal(nodes[i+1].y - nodes[i].y, 10);
+            }
+            for (var i = 18; i < 27; i++) {
+                equal(nodes[i].x - nodes[i+1].x, 10);
+                equal(nodes[i+1].y, nodes[i].y);
+            }
+            for (var i = 27; i < 35; i++) {
+                equal(nodes[i+1].x, nodes[i].x);
+                equal(nodes[i].y - nodes[i+1].y, 10);
+            }
 
         });
 

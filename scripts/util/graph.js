@@ -45,6 +45,25 @@ define(['./priorityqueue'], function (priorityqueue) {
 	    }
 	};
 
+    PixelGraph.prototype.findCenterNodeOfPolygon = function (polygon) {
+        var centroid = polygon.getCentroid();
+        return this.findNearestNode(centroid.x, centroid.y);
+    };
+
+    PixelGraph.prototype.findEdgeNodesOfPolygon = function (polygon) {
+        var points = polygon.getSpacedPointsAlongPerimeter(this.pixelDistance);
+        var uniqNodes = {};
+        var nodes = [];
+        for (var i = 0; i < points.length; i++) {
+            var node = this.findNearestNode(points[i].x, points[i].y);
+            if (!uniqNodes[node]) {
+                nodes.push(node);
+                uniqNodes[node] = true;
+            }
+        }
+        return nodes;
+    };
+
 	PixelGraph.prototype.draw = function (ctx) {
 		for (var n in this.nodes) {
 			var node = this.nodes[n];
