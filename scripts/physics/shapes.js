@@ -56,6 +56,7 @@ define(['underscore', './vector2'], function (_, vector2) {
         }
         return points;
     };
+
     Polygon.prototype.getIntersectionPoint = function (line) {
         for (var i = 0; i < this.lines.length; i++) {
             var intersection = line.getIntersectionPoint(this.lines[i]);
