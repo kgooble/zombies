@@ -121,6 +121,39 @@ function(shapes, v) {
             }
         });
 
+        test("get intersection point for two line segments",
+        function () {
+            var line1 = new shapes.LineSegment(new v.Vector2(0, 0), new v.Vector2(10, 10));
+            var line2 = new shapes.LineSegment(new v.Vector2(0, 10), new v.Vector2(10, 0));
+
+            deepEqual(line1.getIntersectionPoint(line2), new v.Vector2(5, 5));
+        });
+
+        test("intersection point is null for two parallel lines",
+        function () {
+            var line1 = new shapes.LineSegment(new v.Vector2(0, 0), new v.Vector2(10, 10));
+            var line2 = new shapes.LineSegment(new v.Vector2(1, 1), new v.Vector2(11, 11));
+
+            equal(line1.getIntersectionPoint(line2), null);
+        });
+
+        test("get first intersection of polygon and line",
+        function () {
+            var line = new shapes.LineSegment(new v.Vector2(0, 0), new v.Vector2(10, 10));
+            var poly = new shapes.Polygon([
+                new shapes.LineSegment(new v.Vector2(9, 9), new v.Vector2(9, 11)),
+                new shapes.LineSegment(new v.Vector2(9, 11), new v.Vector2(11, 11)),
+                new shapes.LineSegment(new v.Vector2(11, 11), new v.Vector2(11, 9)),
+                new shapes.LineSegment(new v.Vector2(11, 9), new v.Vector2(9, 9)),
+            ]);
+
+            var i1 = poly.getIntersectionPoint(line);
+            var i2 = line.getIntersectionPoint(poly);
+
+            deepEqual(i1, i2);
+            deepEqual(i1, new v.Vector2(9, 9));
+        });
+
     };
     return {run: run};
 });

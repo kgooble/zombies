@@ -56,6 +56,15 @@ define(['underscore', './vector2'], function (_, vector2) {
         }
         return points;
     };
+    Polygon.prototype.getIntersectionPoint = function (line) {
+        for (var i = 0; i < this.lines.length; i++) {
+            var intersection = line.getIntersectionPoint(this.lines[i]);
+            if (intersection) {
+                return intersection;
+            }
+        }
+        return null;
+    };
 
     var LineSegment = function (a, b, c, d) {
         /* A line segment has the property s.t 
@@ -111,6 +120,26 @@ define(['underscore', './vector2'], function (_, vector2) {
         }
 
         return points;
+    };
+
+    LineSegment.prototype.getIntersectionPoint = function (obj) {
+        if (obj instanceof Polygon) {
+            return obj.getIntersectionPoint(this);
+        }
+        var line = obj;
+        var t = null;
+        if (line.a === this.a) {
+            if (line.b !== this.b) {
+                t = (line.d - this.d) / (this.b - line.b);
+            }
+        } else {
+            t = (line.c - this.c) / (this.a - line.a);
+        }
+        if (t === null || t < 0 || t > 1) {
+            return null;
+        }
+        console.log(this.calculatePoint(t));
+        return this.calculatePoint(t);
     };
 
     return {
