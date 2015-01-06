@@ -9,7 +9,7 @@ function(vector2, shapes, pgraph) {
         this.width = width;
         this.height = height;
         this.center = new vector2.Vector2(width/2, height/2);
-        this.graph = new pgraph.Graph(width, height, 40);
+        this.graph = new pgraph.Graph(width, height, 10);
         this.spawnZones = [
             new SpawnZone(new vector2.Vector2(width/8, height/2),
                           new shapes.Rectangle(width/4, height))

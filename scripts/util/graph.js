@@ -34,7 +34,7 @@ define(['./priorityqueue', '../physics/vector2'], function (priorityqueue, vecto
 		}
         var x = (this.nodeList[this.length-2].x - this.nodeList[this.length-1].x);
         var y = (this.nodeList[this.length-2].y - this.nodeList[this.length-1].y);
-        return new vector2.Vector2(x, y);
+        return new vector2.Vector2(x, y).normalized();
 	};
 
 	var PixelGraph = function (width, height, pixelDistance) {
