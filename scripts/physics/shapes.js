@@ -143,10 +143,28 @@ define(['underscore', './vector2'], function (_, vector2) {
         return this.calculatePoint(t);
     };
 
+    LineSegment.prototype.rotateCCW = function (angleInRadians) {
+        var dir = this.endPoint().subtract(this.startPoint());
+        var cosAngle = Math.cos(angleInRadians);
+        var sinAngle = Math.sin(angleInRadians);
+
+        var newDirX = cosAngle * dir.x - sinAngle * dir.y;
+        var newDirY = sinAngle * dir.x + cosAngle * dir.y;
+
+        var startPoint = this.startPoint();
+        var endPoint = this.startPoint().add({"x": newDirX, "y": newDirY});
+        return new LineSegment(startPoint, endPoint);
+    };
+
+    var degreesToRadians = function (degrees) {
+        return degrees * Math.PI / 180;
+    };
+
     return {
         Circle: Circle,
         Rectangle: Rectangle,
         Polygon: Polygon,
-        LineSegment: LineSegment
+        LineSegment: LineSegment,
+        degreesToRadians: degreesToRadians
     };
 });

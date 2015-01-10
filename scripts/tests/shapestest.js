@@ -154,6 +154,17 @@ function(shapes, v) {
             deepEqual(i1, new v.Vector2(9, 9));
         });
 
+        test("rotate line segment 90 degrees clockwise about its start point",
+        function () {
+            var line = new shapes.LineSegment(new v.Vector2(0,0), new v.Vector2(1, 0));
+            var rotatedLine = line.rotateCCW(shapes.degreesToRadians(90));
+
+            ok(Math.abs(rotatedLine.startPoint().x - 0 < 0.00000001));
+            ok(Math.abs(rotatedLine.startPoint().y - 0 < 0.00000001));
+            ok(Math.abs(rotatedLine.endPoint().x - 0 < 0.00000001));
+            ok(Math.abs(rotatedLine.endPoint().y - 1 < 0.00000001));
+        });
+
     };
     return {run: run};
 });
