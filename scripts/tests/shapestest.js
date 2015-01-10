@@ -154,7 +154,7 @@ function(shapes, v) {
             deepEqual(i1, new v.Vector2(9, 9));
         });
 
-        test("rotate line segment 90 degrees clockwise about its start point",
+        test("rotate line segment 90 degrees counter clockwise about its start point",
         function () {
             var line = new shapes.LineSegment(new v.Vector2(0,0), new v.Vector2(1, 0));
             var rotatedLine = line.rotateCCW(shapes.degreesToRadians(90));
@@ -163,6 +163,22 @@ function(shapes, v) {
             ok(Math.abs(rotatedLine.startPoint().y - 0 < 0.00000001));
             ok(Math.abs(rotatedLine.endPoint().x - 0 < 0.00000001));
             ok(Math.abs(rotatedLine.endPoint().y - 1 < 0.00000001));
+        });
+
+        test("rotate line segment 30 degrees clockwise about its start point",
+        function () {
+            var line = new shapes.LineSegment([3, 5], [6, 10]);
+            var rotatedLine = line.rotateCW(shapes.degreesToRadians(30));
+
+            var expectedStartX = line.startPoint().x;
+            var expectedStartY = line.startPoint().y;
+            var expectedEndX = expectedStartX + (Math.sqrt(3) * 3/2) + (5/2);
+            var expectedEndY = expectedStartY - (3/2) + (Math.sqrt(3) * 5/2);
+
+            ok(Math.abs(rotatedLine.startPoint().x - expectedStartX < 0.00000001));
+            ok(Math.abs(rotatedLine.startPoint().y - expectedStartY < 0.00000001));
+            ok(Math.abs(rotatedLine.endPoint().x - expectedEndX < 0.00000001));
+            ok(Math.abs(rotatedLine.endPoint().y - expectedEndY < 0.00000001));
         });
 
     };

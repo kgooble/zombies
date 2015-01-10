@@ -68,10 +68,33 @@ define(['underscore', './vector2'], function (_, vector2) {
     };
 
     var LineSegment = function (a, b, c, d) {
-        /* A line segment has the property s.t 
-            x = a * t + c
-            y = b * t + d
-           where t is a parameter between 0 and 1 */
+        /*
+         * The following input parameter cases are accepted:
+         *  - a is an Array with at least two points and b is an Array with at
+         *    least two points 
+         *    - in which case, the first two points of a are
+         *      taken to be the start point, and the first two points of b are
+         *      taken to be the end point
+         *
+         *  - a and b both have properties x and y
+         *    - similarly to above a becomes the start point and b the end point
+         *
+         *  - a, b, c, and d are all provided and they are all numbers
+         *    - these will be taken for the parameters of the line segment,
+         *      as described below
+         *
+         * A line segment has the property s.t.
+         *   x = a * t + c
+         *   y = b * t + d
+         * where t is a parameter between 0 and 1.
+         *
+         */
+
+        if (a instanceof Array && b instanceof Array) {
+            a = {"x": a[0], "y": a[1]};
+            b = {"x": b[0], "y": b[1]};
+        }
+
         if (a.hasOwnProperty("x") && a.hasOwnProperty("y") && c === undefined && d === undefined) {
             this.c = a.x;
             this.d = a.y;
@@ -139,7 +162,6 @@ define(['underscore', './vector2'], function (_, vector2) {
         if (t === null || t < 0 || t > 1) {
             return null;
         }
-        console.log(this.calculatePoint(t));
         return this.calculatePoint(t);
     };
 
@@ -154,6 +176,10 @@ define(['underscore', './vector2'], function (_, vector2) {
         var startPoint = this.startPoint();
         var endPoint = this.startPoint().add({"x": newDirX, "y": newDirY});
         return new LineSegment(startPoint, endPoint);
+    };
+
+    LineSegment.prototype.rotateCW = function (angleInRadians) {
+        return this.rotateCCW(-angleInRadians);
     };
 
     var degreesToRadians = function (degrees) {
