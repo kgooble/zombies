@@ -100,14 +100,39 @@ function(shapes, collisions, vector2, directions, entitykinds){
         if (!this.collides || !other.collides) {
             return false;
         }
-        if (this.shape instanceof shapes.Rectangle && other.shape instanceof shapes.Rectangle){
+        return twoPositionsAndShapesIntersect(
+                this.shape, this.futurePosition, 
+                other.shape, other.futurePosition);
+    };
+    PhysicsObject.prototype.intersectsPath = function (path) {
+        if (this.shape instanceof shapes.Rectangle) {
+            return collisions.rectangleLineSegmentCollision(
+                    {shape: this.shape, position: this.position},
+                    path);
+        } else {
+            return collisions.circleLineSegmentCollision(
+                    {shape: this.shape, position: this.position},
+                    path);
+        }
+    };
+    PhysicsObject.prototype.intersects = function (other) {
+        if (!this.collides || !other.collides) {
+            return false;
+        }
+        return twoPositionsAndShapesIntersect(
+                this.shape, this.position, 
+                other.shape, other.position);
+    };
+
+    var twoPositionsAndShapesIntersect = function (shape1, position1, shape2, position2) {
+        if (shape1 instanceof shapes.Rectangle && shape2 instanceof shapes.Rectangle){
             return collisions.rectangleRectangleCollision(
-                    {shape: this.shape, position: this.futurePosition}, 
-                    {shape:other.shape, position:other.futurePosition});
-        } else if (this.shape instanceof shapes.Rectangle && other.shape instanceof shapes.Circle) {
+                    {shape: shape1, position: position1}, 
+                    {shape: shape2, position: position2});
+        } else if (shape1 instanceof shapes.Rectangle && shape2 instanceof shapes.Circle) {
             return collisions.rectangleCircleCollision(
-                    {shape: this.shape, position: this.futurePosition},
-                    {shape:other.shape, position: other.futurePosition});
+                    {shape: shape1, position: position1},
+                    {shape: shape2, position: position2});
         }
         return false;
     };
@@ -144,9 +169,30 @@ function(shapes, collisions, vector2, directions, entitykinds){
         }
         return collisions;
     };
+    PhysicsEngine.prototype.hasDisallowedCollisionAlongPath = function (objectId, path) {
+        for (var i in this.objects) {
+            if (i === objectId || this.objects[i].layer !== entitykinds.INANIMATE_OBJECT) {
+                continue;
+            }
+            var coll = this.collision(i, path);
+            if (coll) {
+                console.log("colided:", i);
+                return true;
+            }
+        }
+        return false;
+    };
     PhysicsEngine.prototype.futureCollision = function(objectId1, objectId2) {
         if (objectId1 === objectId2) return false;
         return this.objects[objectId1].willIntersect(this.objects[objectId2]);
+    };
+    PhysicsEngine.prototype.collision = function(objectId1, objectOrPath) {
+        if (objectId1 === objectOrPath) return false;
+        if (objectOrPath instanceof shapes.LineSegment) {
+            return this.objects[objectId1].intersectsPath(objectOrPath);
+        } else {
+            return this.objects[objectId1].intersects(this.objects[objectOrPath]);
+        }
     };
     PhysicsEngine.prototype.removeCollisions = function(objectId){
         this.objects[objectId].collides = false;

@@ -75,6 +75,24 @@ function(shapes, v) {
             ok(Math.abs(points[0].y - points[43].y) < 0.000001);
         });
 
+        test("find perpendicular line that goes through point",
+        function () {
+            var line = new shapes.LineSegment([0, 0], [1, 0]);
+            var newLine = line.findPerpendicularEndingAtPoint([0, 1]);
+
+            equal(newLine.startPoint().x, 0);
+            equal(newLine.startPoint().y, 0);
+            equal(newLine.endPoint().x, 0);
+            equal(newLine.endPoint().y, 1);
+            equal(newLine.length(), 1);
+        });
+
+        test("get direction of line",
+        function () {
+            var line = new shapes.LineSegment([0, 0], [10, 0]);
+            deepEqual(line.getDirection(), new v.Vector2(1, 0));
+        });
+
         test("calculate point along linesegment",
         function () {
             var line = new shapes.LineSegment(1, 1);

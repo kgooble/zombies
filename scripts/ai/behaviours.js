@@ -9,10 +9,9 @@ define(['./actors'], function (actors) {
     Behaviour.prototype.isDead = function (){
         return this.stats.dead;
     };
-    Behaviour.prototype.update = function (timeDelta, data) {
+    Behaviour.prototype.update = function (timeDelta) {
         if (this.actor.calculateAction !== undefined) {
-            return this.actor.calculateAction(data);
-
+            return this.actor.calculateAction(timeDelta);
         }
         return {};
     };

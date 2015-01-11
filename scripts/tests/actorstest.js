@@ -1,6 +1,6 @@
 "use strict";
-define(['../ai/actors'],
-function(actors) {
+define(['../ai/actors', '../ai/goals'],
+function(actors, goals) {
     var run = function() {
         var zombie = new actors.ZombieActor();
         var bullet = new actors.BulletActor();
@@ -28,7 +28,8 @@ function(actors) {
 
         test("zombie's next action is to move towards player location",
         function () {
-            var data = {
+            equal(zombie.calculateAction(0), goals.MOVE_TOWARDS_PLAYER);
+            /*var data = {
                 world: { "getPathBetween" : function () { 
                            return {
                                "getDirection": function () {
@@ -44,7 +45,7 @@ function(actors) {
                 type: "move", speed: 5,
                 xDirection: 3, yDirection: 4
             };
-            deepEqual(zombie.calculateAction(data), expectedAction);
+            deepEqual(zombie.calculateAction(data), expectedAction);*/
         });
 
     };

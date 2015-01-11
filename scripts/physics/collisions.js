@@ -1,5 +1,21 @@
 define(['./vector2', './shapes', 'util/logger'], 
 function (vector2, shapes, logger) {
+    var topLeftOfRect = function (rect) {
+        return {"x": rect.position.x - rect.shape.getWidth()/2,
+                "y": rect.position.y - rect.shape.getHeight()/2};
+    };
+    var topRightOfRect = function (rect) {
+        return {"x": rect.position.x + rect.shape.getWidth()/2,
+                "y": rect.position.y - rect.shape.getHeight()/2};
+    };
+    var bottomLeftOfRect = function (rect) {
+        return {"x": rect.position.x - rect.shape.getWidth()/2,
+                "y": rect.position.y + rect.shape.getHeight()/2};
+    };
+    var bottomRightOffRect = function (rect) {
+        return {"x": rect.position.x + rect.shape.getWidth()/2,
+                "y": rect.position.y + rect.shape.getHeight()/2};
+    };
     var rectangleRectangleCollision = function(r1, r2){
         var myTopEdgeBelowOthersBottomEdge = (
                 (r1.position.y - r1.shape.getHeight()/2) > (r2.position.y + r2.shape.getHeight()/2)
@@ -110,9 +126,31 @@ function (vector2, shapes, logger) {
             }
         }
     };
+
+    var rectangleLineSegmentCollision = function (rectangle, line) {
+        var polygon = new shapes.Polygon([
+                new shapes.LineSegment(
+                    topLeftOfRect(rectangle), topRightOfRect(rectangle)),
+                new shapes.LineSegment(
+                    topRightOfRect(rectangle), bottomRightOffRect(rectangle)),
+                new shapes.LineSegment(
+                    bottomRightOffRect(rectangle), bottomLeftOfRect(rectangle)),
+                new shapes.LineSegment(
+                    bottomLeftOfRect(rectangle), topLeftOfRect(rectangle))
+        ]);
+        return polygon.getIntersectionPoint(line);
+    };
+
+    var circleLineSegmentCollision = function (circle, line) {
+        var shortestLineFromCircleCenterToLine = line.findPerpendicularEndingAtPoint(circle.position);
+        return shortestLineFromCircleCenterToLine.length() < circle.shape.radius;
+    };
+
     return {
         rectangleRectangleCollision: rectangleRectangleCollision,
         rectangleCircleCollision: rectangleCircleCollision,
-        circleCircleCollision: circleCircleCollision
+        circleCircleCollision: circleCircleCollision,
+        rectangleLineSegmentCollision: rectangleLineSegmentCollision,
+        circleLineSegmentCollision: circleLineSegmentCollision
     };
 });

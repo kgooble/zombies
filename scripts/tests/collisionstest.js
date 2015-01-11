@@ -1,6 +1,6 @@
 "use strict";
-define(['../physics/collisions', '../physics/vector2'],
-function(collisions, vector2) {
+define(['../physics/collisions', '../physics/vector2', '../physics/shapes'],
+function(collisions, vector2, shapes) {
     var run = function() {
         test("rectangle rectangle collision", 
         function () {
@@ -65,6 +65,29 @@ function(collisions, vector2) {
                 "circle-circle collision would catch the intersection");
 
         }); 
+
+        test("rectangle line collision",
+        function () {
+            var r = { "position": new vector2.Vector2(0, 0),
+                      "shape":    {"getWidth" : function() { return 10; },
+                                   "getHeight": function() { return 10; } 
+                                  }
+                    };
+            var line = new shapes.LineSegment([0, 0], [5, 5]);
+            ok(collisions.rectangleLineSegmentCollision(r, line));
+        });
+
+        test("circle line collision",
+        function () {
+            var c = { "position": new vector2.Vector2(0, 0),
+                      "shape":    {"radius": 5}
+                    };
+            var line = new shapes.LineSegment([0, -1], [1, 0]);
+            ok(collisions.circleLineSegmentCollision(c, line));
+
+            line = new shapes.LineSegment([10, 10], [10, 15]);
+            ok(!collisions.circleLineSegmentCollision(c, line));
+        });
     };
     return {run: run};
 }

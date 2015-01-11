@@ -131,6 +131,31 @@ define(['underscore', './vector2'], function (_, vector2) {
         return new vector2.Vector2(this.a * t + this.c, this.b * t + this.d);
     };
 
+    LineSegment.prototype.findPerpendicularEndingAtPoint = function (x, y) {
+        if (y === undefined) {
+            if (x instanceof Array) {
+                y = x[1];
+                x = x[0];
+            } else {
+                y = x.y;
+                x = x.x;
+            }
+        }
+        var newA = -this.b;
+        var newB = this.a;
+        var newC = x - newA;
+        var newD = y - newB;
+        return new LineSegment(newA, newB, newC, newD);
+    };
+
+    LineSegment.prototype.getDirection = function () {
+        return this.endPoint().subtract(this.startPoint()).normalized();
+    };
+    
+    LineSegment.prototype.length = function () {
+        return this.endPoint().subtract(this.startPoint()).magnitude();
+    };
+
     LineSegment.prototype.getSpacedPoints = function (pointDistance) {
         var startPoint = this.calculatePoint(0);
         var length = this.calculatePoint(1).subtract(startPoint).magnitude();

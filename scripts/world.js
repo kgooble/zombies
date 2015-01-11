@@ -1,6 +1,6 @@
-define(['./physics/vector2', './physics/shapes', './util/graph'], 
-function(vector2, shapes, pgraph) {
-    var SpawnZone = function(position, shape) {
+define(['./physics/vector2', './physics/shapes', './ai/pathcalculator'], 
+function(vector2, shapes) {
+    var SpawnZone = function(position, shape, pathcalc) {
         this.position = position;
         this.shape = shape;
     };
@@ -9,7 +9,6 @@ function(vector2, shapes, pgraph) {
         this.width = width;
         this.height = height;
         this.center = new vector2.Vector2(width/2, height/2);
-        this.graph = new pgraph.Graph(width, height, 10);
         this.spawnZones = [
             new SpawnZone(new vector2.Vector2(width/8, height/2),
                           new shapes.Rectangle(width/4, height))
@@ -27,14 +26,16 @@ function(vector2, shapes, pgraph) {
                     spawnZone.position.y - spawnZone.shape.getHeight() / 2);
         return new vector2.Vector2(x, y);
     };
-    World.prototype.getPathBetween = function (p1, p2) {
-        var n1 = this.graph.findNearestNode(p1);
+    World.prototype.getPathBetween = function (speed, p1, p2) {
+        // Requires this.graph
+        /*var n1 = this.graph.findNearestNode(p1);
         var n2 = this.graph.findNearestNode(p2);
-        return this.graph.calculatePath(n1, n2);
+        return this.graph.calculatePath(n1, n2);*/
     };
 
     World.prototype.addWall = function (tlx, tly, width, height) {
-        var wallPolygon = new shapes.Polygon([
+        // Requires this.graph
+        /*var wallPolygon = new shapes.Polygon([
                 new shapes.LineSegment({"x": tlx, "y": tly}, 
                                        {"x": tlx+width, "y": tly}),
                 new shapes.LineSegment({"x": tlx+width, "y": tly},
@@ -47,7 +48,7 @@ function(vector2, shapes, pgraph) {
         var wallNodes = this.graph.findEdgeNodesOfPolygon(wallPolygon);
         for (var i = 0; i < wallNodes.length; i++) {
             wallNodes[i].setWall();
-        }
+        }*/
     };
 
     return {

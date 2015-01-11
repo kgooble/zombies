@@ -1,7 +1,8 @@
-define(['physics/engine', 'physics/entitykinds', 'graphics/engine', 'ai/behaviours', 
-        'directions', 'states', 'objectkinds'], 
-function (physicslib, physicsentitykinds, graphicslib, behaviours, directions,
-          states, objectkinds) {
+define(['physics/engine', 'physics/entitykinds', 'physics/shapes',
+        'graphics/engine', 'ai/behaviours', 'ai/pathcalculator', 'directions',
+        'states', 'objectkinds', 'ai/goals'], 
+function (physicslib, physicsentitykinds, shapes, graphicslib, behaviours,
+          pathcalc, directions, states, objectkinds, goals) {
     var GameActions = {
         MOVE_UP: 0,
         MOVE_DOWN: 1,
@@ -188,6 +189,33 @@ function (physicslib, physicsentitykinds, graphicslib, behaviours, directions,
     Game.prototype.setGameObjectState = function (objectId, state) {
         this.graphics.setState(this.getGraphicsId(objectId), state);
     };
+    Game.prototype.moveObjectTowardsPlayer = function (objectId, speed) {
+        var objPos = this.physics.getPosition(this.getPhysicsId(objectId));
+        var playerPos = this.physics.getPosition(
+                this.getPhysicsId(this.playerId));
+        var initPath = new shapes.LineSegment(
+                objPos,
+                objPos.add(playerPos.subtract(objPos).normalized().times(speed))
+                );
+        var pc = new pathcalc.PathCalculator(initPath);
+        var collided = true;
+        var path = null;
+        while (collided) {
+            path = pc.getNextPath();
+            if (path === null || path === undefined) {
+                console.warn("Could not find path!");
+                return;
+            }
+            collided = this.physics.hasDisallowedCollisionAlongPath(
+                    this.getPhysicsId(objectId), path);
+        }
+        var dir = path.getDirection();
+        var xDir = dir.x;
+        var yDir = dir.y;
+        this.physics.addConstantVelocity(this.getPhysicsId(objectId),
+                speed, xDir, yDir);
+        this.setGameObjectState(objectId, states.WALKING);
+    };
     Game.prototype.updateGameObjects = function (timeDelta) {
         for (var q = 0; q < this.queue.length; q++) {
             var queuedAction = this.queue[q];
@@ -214,19 +242,13 @@ function (physicslib, physicsentitykinds, graphicslib, behaviours, directions,
         }
         this.queue = [];
         for (var i in this.objects){
-            var goals = this.objects[i].update(timeDelta, 
-                {
-                    "player_location": this.physics.getPosition(
-                        this.getPhysicsId(this.playerId)),
-                    "my_location": this.physics.getPosition(
-                        this.getPhysicsId(i)),
-                    "world": this.world
-                }
-                );
-            if (goals && goals.type === "move") {
-                this.physics.addConstantVelocity(this.getPhysicsId(i),
-                    goals.speed, goals.xDirection, goals.yDirection);
-                this.setGameObjectState(i, states.WALKING);
+            var goal = this.objects[i].update(timeDelta);
+            switch (goal.type) {
+                case goals.MOVE_TOWARDS_PLAYER:
+                    this.moveObjectTowardsPlayer(i, goal.speed);
+                    break;
+                default:
+                    break;
             }
             var posn = this.getPosition(i);
             if (this.objects[i].isDead() || 

@@ -1,4 +1,4 @@
-define([], function () {
+define(['./goals'], function (goals) {
     var EmptyActor = function(){};
     var WallActor = function(){};
     var ZombieActor = function(){
@@ -16,20 +16,8 @@ define([], function () {
             stats.dead = true;
         }
     };
-    ZombieActor.prototype.calculateAction = function (data) {
-        var path = data.world.getPathBetween(data.my_location, data.player_location);
-        var dir = null;
-        if (path) {
-            dir = path.getDirection();
-        } else {
-            dir = {"x": data.player_location.x - data.my_location.x,
-                   "y": data.player_location.y - data.my_location.y};
-        }
-        return { 
-            type: "move", speed: this.speed, 
-            xDirection: dir.x,
-            yDirection: dir.y
-        };
+    ZombieActor.prototype.calculateAction = function (timeDelta) {
+        return {"type": goals.MOVE_TOWARDS_PLAYER, "speed": this.speed};
     };
 
     PlayerActor.prototype.onCollision = function (other, stats) {
